@@ -19,6 +19,8 @@ Output: 12 è pari
 - Ricorda: usa `===` per il confronto, non `==`
 */
 
+ //X LA CONSOLE
+
 let numero = prompt("scrivi un numero "  )
 numero = parseInt(numero)
 
@@ -26,9 +28,10 @@ if (numero % 2 === 0) {
     console.log(numero + " è pari")
  } else {
     console.log(numero + "è dispari")
- }                                     //X LA CONSOLE
+ }                                     
 
 
+  //X LA PAGINA
  if (numero % 2 === 0) {
     
     document.getElementById("risultato")
@@ -37,5 +40,5 @@ if (numero % 2 === 0) {
     
     document.getElementById("risultato")
     .textContent = numero + " è dispari"
-}                                   //X LA PAGINA
+}                                  
 
