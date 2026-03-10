@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Calcolatrice</title>
+</head>
+<body>
+    <h1>Calcolatrice</h1>
+
+    <label>Primo numero: <input type="number" id="primoNumero"></label><br><br>
+    <label>Secondo numero: <input type="number" id="secondoNumero"></label><br><br>
+    <label>Operazione:
+        <select id="operazione">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+    </label><br><br>
+
+    <button onclick="calcola()">Calcola</button>
+
+    <p id="risultato"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
