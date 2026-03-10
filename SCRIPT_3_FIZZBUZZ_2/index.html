@@ -4,6 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La mia prima pagina js</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        button {
+            padding: 8px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+
+        p {
+            background-color: #f0f0f0;
+            border-left: 4px solid #333;
+            padding: 12px 16px;
+            border-radius: 4px;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,6 +40,36 @@
      <button onclick="fizzBuzz()">FizzBuzz</button>
 
      <div id="output"></div>
+
+     <p>
+        È JavaScript nativo (vanilla JS), nessuna libreria esterna.<br><br>
+        <strong>Lettura riga per riga:</strong><br><br>
+        <code>let output = document.getElementById("output");</code><br>
+        <code>document</code> → rappresenta la pagina HTML<br>
+        <code>.getElementById("output")</code> → cerca nell'HTML un elemento con <code>id="output"</code><br>
+        <code>let output = ...</code> → salva quell'elemento in una variabile<br><br>
+        <code>output.innerHTML = "";</code><br>
+        <code>innerHTML</code> → è il contenuto HTML interno dell'elemento<br>
+        <code>= ""</code> → lo svuota (cancella tutto ciò che c'è dentro)<br><br>
+        <em>In pratica: trova la casella di output nella pagina e la pulisce prima di scrivere nuovi risultati.</em><br><br>
+        <hr>
+        <strong>Riassunto dubbi:</strong><br><br>
+        <strong>1. <code>let output = document.getElementById("output")</code></strong><br>
+        Non salva il contenuto del div, salva il <em>riferimento</em> (l'indirizzo) all'elemento HTML. Il div può essere vuoto — non importa.<br><br>
+
+        <strong>2. <code>output.innerHTML = ""</code></strong><br>
+        Svuota il div prima di scrivere. Sembra inutile la prima volta (div già vuoto), ma serve dalla seconda esecuzione in poi per non accumulare risultati vecchi.<br><br>
+
+        <strong>3. <code>output.innerHTML += testo + "&lt;br&gt;"</code></strong><br>
+        <code>output</code> → sa già qual è il div (collegato al punto 1)<br>
+        <code>innerHTML</code> → è il contenuto HTML dentro quel div<br>
+        <code>+=</code> → aggiunge senza sovrascrivere<br>
+        <code>"&lt;br&gt;"</code> → manda a capo ogni risultato<br>
+        <em>Senza questa riga il risultato verrebbe calcolato ma non mostrato da nessuna parte.</em><br><br>
+
+        <strong>4. Come fa a sapere dove scrivere?</strong><br>
+        Perché <code>output</code> è stato "agganciato" al div nella prima riga. Da quel momento <code>output</code> e <code>&lt;div id="output"&gt;</code> sono la stessa cosa in memoria.
+     </p>
 
      <!-- Il tag script collega il file JS alla pagina -->
     <script src="script.js"></script>

@@ -4,15 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La mia prima pagina js</title>
+    <style>
+        p {
+            max-width: 65ch;
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
 
      <h1>FizzBuzz — Versione 1</h1>
 
-     <p>Questa versione esegue FizzBuzz da 1 a 30 automaticamente al caricamento della pagina. L'output è visibile nella console del browser (F12).</p>
+     <h2>Questa versione esegue FizzBuzz da 1 a 30 automaticamente al caricamento della pagina. <br>L'output è visibile nella console del browser (F12).</p>
 
      <button onclick="fizzBuzz()">Riesegui FizzBuzz</button>
+
+
+     <p>
+        Nella programmazione, <code>i % 3 === 0</code> è un modo comune per verificare se un numero è divisibile per 3.
+     </p>
+
+     <h3>1. L'operatore Modulo (<code>%</code>)</h3>
+     <p>Il simbolo <code>%</code> calcola il resto di una divisione.</p>
+     <ul>
+        <li>6 ÷ 3 = 2 con resto <strong>0</strong> → <code>6 % 3 === 0</code></li>
+        <li>7 ÷ 3 = 2 con resto <strong>1</strong> → <code>7 % 3 === 1</code></li>
+     </ul>
+
+     <h3>2. Il confronto (<code>=== 0</code>)</h3>
+     <p>
+        Il triplo uguale è un controllo di "stretta uguaglianza". Chiedere se il resto è esattamente 0
+        equivale a chiedersi: <em>"Il 3 è entrato perfettamente in questo numero?"</em>
+     </p>
+
+     <h3>Casi d'uso comuni</h3>
+     <ul>
+        <li><strong>FizzBuzz:</strong> stampa "Fizz" se un numero è divisibile per 3.</li>
+        <li><strong>Layout a griglia:</strong> ogni terzo elemento inizia una nuova riga.</li>
+        <li><strong>Modelli alternati:</strong> applica uno stile a ogni terzo elemento di un elenco.</li>
+     </ul>
+
+     <h3>Tabella dei valori</h3>
+     <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>i</th>
+                <th>i % 3</th>
+                <th>i % 3 === 0</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>1</td><td>false</td></tr>
+            <tr><td>2</td><td>2</td><td>false</td></tr>
+            <tr><td>3</td><td>0</td><td>true</td></tr>
+            <tr><td>4</td><td>1</td><td>false</td></tr>
+            <tr><td>5</td><td>2</td><td>false</td></tr>
+            <tr><td>6</td><td>0</td><td>true</td></tr>
+        </tbody>
+     </table>
+
 
      <!-- Il tag script collega il file JS alla pagina -->
     <script src="script.js"></script>
