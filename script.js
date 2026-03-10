@@ -260,31 +260,33 @@ Output: Operazione "^" non valida!
 
 */
 
-// Usiamo Number() per convertire il testo del prompt in numeri reali
-let primoNumero = Number(prompt("Scrivi il primo numero..."));
-let secondoNumero = Number(prompt("Scrivi il secondo numero..."));
-let operazione = prompt("Scrivi l'operazione che vuoi eseguire (+, -, *, /)...");
+function calcolatrice() {
+    // Usiamo Number() per convertire il testo del prompt in numeri reali
+    let primoNumero = Number(prompt("Scrivi il primo numero..."));
+    let secondoNumero = Number(prompt("Scrivi il secondo numero..."));
+    let operazione = prompt("Scrivi l'operazione che vuoi eseguire (+, -, *, /)...");
 
-let risultato;
+    let risultato;
 
-if (operazione === "+") {
-    risultato = primoNumero + secondoNumero;
-    console.log("La somma è: " + risultato);
-} else if (operazione === "-") {
-    risultato = primoNumero - secondoNumero;
-    console.log("La sottrazione è: " + risultato);
-}   else if (operazione === "*") {
-    risultato = primoNumero * secondoNumero;
-    console.log("La moltiplicazione è: " + risultato);
-} else if (operazione === "/") {
-    if (secondoNumero !== 0) {
-        risultato = primoNumero / secondoNumero;
-        console.log("La divisione è: " + risultato);
+    if (operazione === "+") {
+        risultato = primoNumero + secondoNumero;
+        console.log("La somma è: " + risultato);
+    } else if (operazione === "-") {
+        risultato = primoNumero - secondoNumero;
+        console.log("La sottrazione è: " + risultato);
+    } else if (operazione === "*") {
+        risultato = primoNumero * secondoNumero;
+        console.log("La moltiplicazione è: " + risultato);
+    } else if (operazione === "/") {
+        if (secondoNumero !== 0) {
+            risultato = primoNumero / secondoNumero;
+            console.log("La divisione è: " + risultato);
+        } else {
+            console.log("La divisione di un numero per 0 è impossibile");
+        }
     } else {
-        console.log("La divisione di un numero per 0 è impossibile");
+        console.log('Operazione "' + operazione + '" non valida!');
     }
-} else {
-    console.log('Operazione "' + operazione + '" non valida!');
 }
 
 /*
@@ -349,7 +351,7 @@ function indovinaNumero() {
     }
 }
 
-indovinaNumero();
+// indovinaNumero(); // chiamata rimossa — usa il bottone in HTML
 
 
 /*
@@ -484,7 +486,7 @@ function analizzaTesto() {
     console.log("Frase al contrario: \"" + fraseAlContrario + '"');
 }
 
-analizzaTesto();
+// analizzaTesto(); // chiamata rimossa — usa il bottone in HTML
 
 
 
