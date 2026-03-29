@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>console.log vs alert vs prompt</title>
+</head>
+<body>
+
+    <h1>Esempio: console.log, alert, prompt</h1>
+    <p id="risultato"></p>
+
+    <script>
+
+        // -------------------------------------------------------
+        // 1. CONSOLE.LOG
+        // -------------------------------------------------------
+        // Stampa un messaggio nella console del browser (F12 → Console).
+        // L'utente NON lo vede. Serve solo a te sviluppatore per debug.
+        // NON blocca l'esecuzione del codice.
+
+        console.log("Sono nella console, l'utente non mi vede!");
+
+
+        // -------------------------------------------------------
+        // 2. ALERT
+        // -------------------------------------------------------
+        // Mostra un popup con un messaggio.
+        // L'utente lo vede e deve cliccare OK per chiuderlo.
+        // BLOCCA l'esecuzione del codice finché non viene chiuso.
+        // Non riceve nessun input, mostra solo un'informazione.
+
+        alert("Ciao! Questo è un alert. Clicca OK per continuare.");
+
+
+        // -------------------------------------------------------
+        // 3. PROMPT
+        // -------------------------------------------------------
+        // Mostra un popup con un campo di testo dove l'utente può scrivere.
+        // BLOCCA l'esecuzione finché l'utente non clicca OK o Annulla.
+        // RITORNA una stringa con ciò che l'utente ha scritto.
+        // Se l'utente clicca Annulla, ritorna null.
+
+        let nome = prompt("Come ti chiami?");
+
+
+        // -------------------------------------------------------
+        // DIFFERENZA TRA ALERT E PROMPT
+        // -------------------------------------------------------
+        // alert()  → solo OUTPUT  (dà info all'utente, non riceve nulla)
+        // prompt() → INPUT + OUTPUT (chiede qualcosa, riceve una risposta)
+
+        // Controlliamo se l'utente ha inserito qualcosa o ha annullato
+        if (nome === null || nome === "") {
+            // null  → ha cliccato Annulla
+            // ""    → ha cliccato OK senza scrivere niente
+            console.log("L'utente non ha inserito il nome.");
+            document.getElementById("risultato").textContent = "Nessun nome inserito.";
+        } else {
+            // Ha scritto qualcosa: usiamo textContent per mostrarlo nella pagina
+            // textContent → testo puro nella pagina, non blocca, non è un popup
+            console.log("Nome inserito: " + nome);
+            document.getElementById("risultato").textContent = "Ciao, " + nome + "!";
+        }
+
+
+        // -------------------------------------------------------
+        // RIEPILOGO FINALE
+        // -------------------------------------------------------
+        // console.log("x")  → visibile solo in DevTools, non blocca, per debug
+        // alert("x")        → popup visibile all'utente, blocca, nessun input
+        // prompt("x")       → popup con input, blocca, ritorna stringa o null
+        // textContent = x   → scrive nella pagina HTML, non blocca, per l'utente
+
+    </script>
+
+</body>
+</html>

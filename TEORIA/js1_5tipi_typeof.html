@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!--
+    File: js1_5tipi_typeof.html
+    Argomento: Tipi primitivi e typeof in JavaScript
+    Prerequisiti: js1_1, js1_2, js1_3, js1_4
+
+    COME USARE QUESTO FILE:
+    Apri il browser, vai su DevTools (Cmd+Option+J) → Console,
+    poi ricarica la pagina per vedere tutti i log degli esempi.
+-->
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>1.5 — Tipi primitivi e typeof</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        h1 { color: #569cd6; }
+        h2 { color: #4ec9b0; margin-top: 40px; }
+        h3 { color: #9cdcfe; }
+
+        pre {
+            background: #252526;
+            border-left: 4px solid #569cd6;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .ok      { color: #4ec9b0; }
+        .error   { color: #f44747; }
+        .note    { color: #ffd700; }
+        .comment { color: #6a9955; }
+        .bug     { color: #f44747; font-weight: bold; }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px 14px;
+            text-align: left;
+        }
+        th { background: #2d2d2d; color: #569cd6; }
+        tr:nth-child(even) { background: #252526; }
+
+        .box {
+            background: #252526;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 16px 0;
+        }
+        .regola-oro {
+            border-left: 4px solid #ffd700;
+            background: #2a2500;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .attenzione {
+            border-left: 4px solid #f44747;
+            background: #2a0000;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>1.5 — Tipi primitivi e <code>typeof</code></h1>
+
+    <p>
+        JavaScript, come Python, è un linguaggio a <strong>tipizzazione dinamica</strong>:
+        non si dichiara il tipo di una variabile — viene inferito automaticamente dal valore assegnato.
+    </p>
+
+    <pre>
+let nome       = <span class="ok">"Mario"</span>;   <span class="comment">// string</span>
+let eta        = 20;         <span class="comment">// number</span>
+let isStudente = true;       <span class="comment">// boolean</span>
+let voto       = null;       <span class="comment">// null (assenza intenzionale di valore)</span>
+let indirizzo;               <span class="comment">// undefined (dichiarata ma senza valore)</span></pre>
+
+
+    <!-- =====================================================================
+         SEZIONE 1 — I tipi primitivi
+         ===================================================================== -->
+    <h2>1. I tipi primitivi</h2>
+
+    <p>
+        JavaScript ha <strong>7 tipi primitivi</strong>. I primi cinque sono quelli che userai ogni giorno.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Esempio</th>
+                <th>Equivalente Python</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>string</code></td>
+                <td><code>"ciao"</code>, <code>'ciao'</code>, <code>`ciao`</code></td>
+                <td><code>str</code></td>
+            </tr>
+            <tr>
+                <td><code>number</code></td>
+                <td><code>42</code>, <code>3.14</code>, <code>NaN</code>, <code>Infinity</code></td>
+                <td><code>int</code>, <code>float</code></td>
+            </tr>
+            <tr>
+                <td><code>boolean</code></td>
+                <td><code>true</code>, <code>false</code></td>
+                <td><code>True</code>, <code>False</code> (maiuscolo!)</td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><code>null</code></td>
+                <td><code>None</code></td>
+            </tr>
+            <tr>
+                <td><code>undefined</code></td>
+                <td><code>undefined</code></td>
+                <td>— (non esiste in Python)</td>
+            </tr>
+            <tr>
+                <td><code>bigint</code></td>
+                <td><code>123n</code></td>
+                <td>Python gestisce big int nativamente</td>
+            </tr>
+            <tr>
+                <td><code>symbol</code></td>
+                <td><code>Symbol("id")</code></td>
+                <td>— (non esiste in Python)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="box">
+        <span class="note">💡 In Python</span> hai <code>int</code> e <code>float</code> separati.
+        In JavaScript esiste un solo tipo <code>number</code> per tutti i numeri (interi e decimali).
+        Eccezione: <code>bigint</code> per numeri enormi che superano i limiti di <code>number</code>.
+    </div>
+
+
+    <!-- =====================================================================
+         SEZIONE 2 — typeof
+         ===================================================================== -->
+    <h2>2. L'operatore <code>typeof</code></h2>
+
+    <p>
+        <code>typeof</code> è un operatore unario che restituisce una <strong>stringa</strong>
+        con il nome del tipo del valore esaminato.
+    </p>
+
+    <pre>
+console.log(typeof "ciao");      <span class="comment">// "string"</span>
+console.log(typeof 42);          <span class="comment">// "number"</span>
+console.log(typeof 3.14);        <span class="comment">// "number"  ← interi e decimali sono lo stesso tipo</span>
+console.log(typeof true);        <span class="comment">// "boolean"</span>
+console.log(typeof undefined);   <span class="comment">// "undefined"</span>
+console.log(typeof null);        <span class="comment">// "object"  ← 🐛 BUG STORICO di JavaScript!</span>
+console.log(typeof [1, 2]);      <span class="comment">// "object"  ← gli array sono oggetti in JS</span>
+console.log(typeof {});          <span class="comment">// "object"</span>
+console.log(typeof function(){}); <span class="comment">// "function"</span></pre>
+
+    <div class="attenzione">
+        <span class="bug">🐛 Bug storico:</span> <code>typeof null</code> restituisce <code>"object"</code>
+        invece di <code>"null"</code>. È un errore presente fin dalla prima versione di JavaScript (1995)
+        e non è mai stato corretto per non rompere il codice esistente. Tutti i programmatori JS
+        lo conoscono e lo aggirano.
+    </div>
+
+    <div class="box">
+        <span class="note">📌 Come controllare se qualcosa è null:</span>
+        <pre style="margin: 10px 0 0 0;">
+let valore = null;
+
+<span class="comment">// ❌ NON fare così (typeof non funziona per null):</span>
+typeof valore === "null"   <span class="comment">// false! restituisce "object"</span>
+
+<span class="comment">// ✅ Fare così:</span>
+valore === null            <span class="comment">// true — confronto diretto</span></pre>
+    </div>
+
+
+    <!-- =====================================================================
+         SEZIONE 3 — null vs undefined
+         ===================================================================== -->
+    <h2>3. <code>null</code> vs <code>undefined</code></h2>
+
+    <p>
+        Questo è un concetto nuovo rispetto a Python, dove esiste solo <code>None</code>.
+        In JavaScript ci sono <strong>due valori "assenti"</strong> con significati diversi.
+    </p>
+
+    <pre>
+let a;              <span class="comment">// undefined → "esiste ma non ha ancora un valore"</span>
+let b = null;       <span class="comment">// null → "ho deciso intenzionalmente che non ha valore"</span>
+
+console.log(a);     <span class="comment">// undefined</span>
+console.log(b);     <span class="comment">// null</span>
+
+console.log(typeof a);  <span class="comment">// "undefined"</span>
+console.log(typeof b);  <span class="comment">// "object"  ← il bug di prima</span></pre>
+
+    <div class="box">
+        <span class="note">💡 Analogia:</span><br>
+        <code>undefined</code> è come una scatola vuota appena comprata — non hai ancora messo niente dentro.<br>
+        <code>null</code> è una scatola che hai <em>svuotato di proposito</em> — sai benissimo che è vuota.
+    </div>
+
+    <pre>
+<span class="comment">// Confronto == (uguaglianza debole): null e undefined sono "uguali"</span>
+console.log(null == undefined);   <span class="comment">// true  ← entrambi "assenti"</span>
+
+<span class="comment">// Confronto === (uguaglianza stretta): sono tipi diversi</span>
+console.log(null === undefined);  <span class="comment">// false ← tipi diversi</span>
+
+<span class="comment">// In pratica: usa sempre === per confronti precisi (vedi lezione 1.6)</span></pre>
+
+
+    <!-- =====================================================================
+         SEZIONE 4 — Coercizione di tipo
+         ===================================================================== -->
+    <h2>4. Conversioni di tipo automatiche (coercion)</h2>
+
+    <p>
+        JavaScript converte i tipi <strong>automaticamente</strong> in certi contesti.
+        Questo può creare risultati sorprendenti, specialmente per chi viene da Python.
+    </p>
+
+    <pre>
+<span class="comment">// + con una stringa → concatenazione (la stringa "vince")</span>
+console.log("5" + 3);         <span class="comment">// "53"   ← non 8!</span>
+console.log("ciao" + true);   <span class="comment">// "ciaotrue"</span>
+
+<span class="comment">// -, *, / → conversione a numero</span>
+console.log("5" - 3);         <span class="comment">// 2</span>
+console.log("5" * 2);         <span class="comment">// 10</span>
+console.log("10" / 2);        <span class="comment">// 5</span>
+
+<span class="comment">// boolean → numero (true=1, false=0)</span>
+console.log(true + 1);        <span class="comment">// 2</span>
+console.log(false + 1);       <span class="comment">// 1</span>
+console.log(true + true);     <span class="comment">// 2</span>
+
+<span class="comment">// Confronto debole == con tipi misti → risultati sorprendenti</span>
+console.log("" == false);     <span class="comment">// true  😱</span>
+console.log(0 == false);      <span class="comment">// true  😱</span>
+console.log("0" == false);    <span class="comment">// true  😱</span></pre>
+
+    <div class="attenzione">
+        <strong>In Python</strong> <code>"5" + 3</code> lancia un <code>TypeError</code> — Python non fa conversioni implicite tra tipi incompatibili.
+        JavaScript invece "tenta di aiutarti" e spesso crea bug silenziosi. Per questo è importante
+        usare <code>===</code> (confronto stretto) invece di <code>==</code>.
+    </div>
+
+
+    <!-- =====================================================================
+         SEZIONE 5 — Conversioni esplicite
+         ===================================================================== -->
+    <h2>5. Conversioni esplicite</h2>
+
+    <p>
+        Meglio convertire <strong>esplicitamente</strong> piuttosto che affidarsi alla coercizione automatica.
+    </p>
+
+    <pre>
+<span class="comment">// → Number</span>
+Number("42");         <span class="comment">// 42</span>
+Number("3.14");       <span class="comment">// 3.14</span>
+Number("ciao");       <span class="comment">// NaN (Not a Number — non convertibile)</span>
+Number(true);         <span class="comment">// 1</span>
+Number(false);        <span class="comment">// 0</span>
+Number(null);         <span class="comment">// 0</span>
+Number(undefined);    <span class="comment">// NaN</span>
+
+<span class="comment">// parseInt e parseFloat: estraggono numeri da stringhe</span>
+parseInt("42px");     <span class="comment">// 42  (ignora il resto non numerico)</span>
+parseFloat("3.14em"); <span class="comment">// 3.14</span>
+parseInt("px42");     <span class="comment">// NaN (la stringa non inizia con un numero)</span>
+
+<span class="comment">// → String</span>
+String(42);           <span class="comment">// "42"</span>
+String(true);         <span class="comment">// "true"</span>
+String(null);         <span class="comment">// "null"</span>
+String(undefined);    <span class="comment">// "undefined"</span>
+(42).toString();      <span class="comment">// "42"  (metodo alternativo)</span>
+
+<span class="comment">// → Boolean</span>
+Boolean(0);           <span class="comment">// false</span>
+Boolean("");          <span class="comment">// false</span>
+Boolean(null);        <span class="comment">// false</span>
+Boolean(undefined);   <span class="comment">// false</span>
+Boolean(NaN);         <span class="comment">// false</span>
+Boolean(1);           <span class="comment">// true</span>
+Boolean("ciao");      <span class="comment">// true</span>
+Boolean([]);          <span class="comment">// true  ← attenzione: array vuoto è truthy!</span></pre>
+
+    <div class="regola-oro">
+        <strong>Valori "falsy" in JavaScript</strong> (diventano <code>false</code> in un contesto booleano):<br><br>
+        <code>0</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>, <code>false</code><br><br>
+        Tutto il resto è <strong>truthy</strong> — inclusi <code>[]</code> (array vuoto) e <code>{}</code> (oggetto vuoto)!
+        Questo è diverso da Python, dove <code>[]</code> è <code>False</code>.
+    </div>
+
+
+    <!-- =====================================================================
+         ESERCIZI
+         ===================================================================== -->
+    <h2>6. Esercizi (controlla la Console — F12)</h2>
+    <p>Apri gli strumenti sviluppatore (F12 → Console) e ricarica la pagina per vedere i risultati.</p>
+
+    <script>
+        /*
+         * =====================================================================
+         * ESERCIZIO 1 — typeof sui tipi primitivi
+         * =====================================================================
+         * Obiettivo: prendere confidenza con typeof e i tipi di base.
+         */
+
+        console.log("--- ESERCIZIO 1: typeof ---");
+
+        let nome       = "Mario";
+        let eta        = 25;
+        let altezza    = 1.80;
+        let isOnline   = true;
+        let punteggio  = null;    // il giocatore non ha ancora un punteggio
+        let username;             // non ancora assegnato
+
+        console.log(typeof nome);       // "string"
+        console.log(typeof eta);        // "number"
+        console.log(typeof altezza);    // "number"  ← stesso tipo di eta!
+        console.log(typeof isOnline);   // "boolean"
+        console.log(typeof punteggio);  // "object"  ← il bug storico di null
+        console.log(typeof username);   // "undefined"
+
+        // Verifica diretta per null (aggiriamo il bug di typeof):
+        console.log("punteggio è null?", punteggio === null);  // true
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 2 — null vs undefined a confronto
+         * =====================================================================
+         * Obiettivo: capire la differenza pratica tra i due valori assenti.
+         */
+
+        console.log("\n--- ESERCIZIO 2: null vs undefined ---");
+
+        let carrelloUtente;          // undefined: l'utente non ha ancora un carrello
+        let sessioneScaduta = null;  // null: sappiamo che la sessione non c'è più
+
+        console.log("carrello:", carrelloUtente);       // undefined
+        console.log("sessione:", sessioneScaduta);      // null
+
+        // == (debole): li considera uguali
+        console.log(carrelloUtente == sessioneScaduta);  // true
+        // === (stretto): li distingue
+        console.log(carrelloUtente === sessioneScaduta); // false
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 3 — Coercizione: predici l'output
+         * =====================================================================
+         * Obiettivo: capire quando JS converte i tipi automaticamente.
+         * Prima di guardare i commenti, prova a indovinare cosa stampa ogni riga.
+         */
+
+        console.log("\n--- ESERCIZIO 3: coercizione automatica ---");
+
+        console.log("3" + 4);          // "34"   (+ con stringa → concatenazione)
+        console.log("3" - 1);          // 2      (- converte a numero)
+        console.log("6" / "2");        // 3      (/ converte entrambi)
+        console.log(true + true);      // 2      (true = 1)
+        console.log(false + 10);       // 10     (false = 0)
+        console.log("5" - "ciao");     // NaN    ("ciao" non è un numero)
+
+        // NaN è contagioso: qualsiasi operazione con NaN dà NaN
+        console.log(NaN + 1);          // NaN
+        console.log(NaN === NaN);      // false! NaN non è uguale a se stesso
+        console.log(isNaN(NaN));       // true  ← usa isNaN() per controllare
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 4 — Conversioni esplicite
+         * =====================================================================
+         * Obiettivo: convertire i tipi in modo controllato e sicuro.
+         */
+
+        console.log("\n--- ESERCIZIO 4: conversioni esplicite ---");
+
+        // Scenario: dati arrivano come stringhe (es. da un form HTML)
+        const inputEta    = "28";
+        const inputAltezza = "1.75";
+        const inputNome   = 42;  // per sbaglio è un numero
+
+        const etaNumerica     = Number(inputEta);        // 28
+        const altezzaNumerica = parseFloat(inputAltezza); // 1.75
+        const nomeStringa     = String(inputNome);        // "42"
+
+        console.log("Età:", etaNumerica, typeof etaNumerica);       // 28 "number"
+        console.log("Altezza:", altezzaNumerica, typeof altezzaNumerica); // 1.75 "number"
+        console.log("Nome:", nomeStringa, typeof nomeStringa);      // "42" "string"
+
+        // parseInt ignora i caratteri non numerici dopo il numero
+        console.log(parseInt("100px"));    // 100
+        console.log(parseInt("3.9"));      // 3  (tronca, non arrotonda)
+        console.log(parseInt("abc"));      // NaN
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 5 — Truthy e Falsy
+         * =====================================================================
+         * Obiettivo: capire quali valori sono considerati "veri" o "falsi" in JS.
+         */
+
+        console.log("\n--- ESERCIZIO 5: truthy e falsy ---");
+
+        // I 6 valori falsy di JavaScript:
+        const valori = [0, "", null, undefined, NaN, false];
+        valori.forEach(v => {
+            console.log(`Boolean(${String(v)}) →`, Boolean(v));  // tutti false
+        });
+
+        console.log("---");
+
+        // Attenzione: questi sono TRUTHY (sorprendenti per chi viene da Python)
+        console.log(Boolean([]));    // true  ← array vuoto è truthy!
+        console.log(Boolean({}));    // true  ← oggetto vuoto è truthy!
+        console.log(Boolean("0"));   // true  ← stringa non vuota è truthy!
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 6 — Sfida: trova il tipo e converti
+         * =====================================================================
+         * Obiettivo: mettere insieme tutto quello che hai imparato.
+         * Prima di guardare, scrivi su carta cosa ti aspetti che stampi ogni riga.
+         */
+
+        console.log("\n--- ESERCIZIO 6: sfida ---");
+
+        const a = "10";
+        const b = 5;
+        const c = true;
+
+        // Cosa stampa?
+        console.log(a + b);          // "105"  (string + number → concatenazione)
+        console.log(a - b);          // 5      (string - number → conversione numerica)
+        console.log(b + c);          // 6      (number + boolean → true diventa 1)
+        console.log(a + b + b);      // "1055" (da sinistra: "10"+5="105", poi "105"+5="1055")
+        console.log(b + b + a);      // "1010" (5+5=10, poi 10+"10"="1010")
+
+        // Morale: l'ordine degli operandi con + cambia tutto!
+        // Converti sempre esplicitamente se non vuoi sorprese:
+        console.log(Number(a) + b);  // 15 ✅
+
+    </script>
+
+</body>
+
+</html>

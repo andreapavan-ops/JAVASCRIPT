@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<!--
+    File: js1_7metodi.html
+    Argomento: Metodi principali di String, Number, Array e Math
+    Prerequisiti: js1_1, js1_2, js1_3, js1_4, js1_5, js1_6
+
+    COME USARE QUESTO FILE:
+    Apri il browser, vai su DevTools (Cmd+Option+J) → Console,
+    poi ricarica la pagina per vedere tutti i log degli esempi.
+-->
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>1.7 — Metodi principali</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        h1 { color: #569cd6; }
+        h2 { color: #4ec9b0; margin-top: 40px; }
+        h3 { color: #9cdcfe; }
+
+        pre {
+            background: #252526;
+            border-left: 4px solid #569cd6;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .ok      { color: #4ec9b0; }
+        .error   { color: #f44747; }
+        .note    { color: #ffd700; }
+        .comment { color: #6a9955; }
+        .bug     { color: #f44747; font-weight: bold; }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px 14px;
+            text-align: left;
+        }
+        th { background: #2d2d2d; color: #569cd6; }
+        tr:nth-child(even) { background: #252526; }
+
+        .box {
+            background: #252526;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 16px 0;
+        }
+        .regola-oro {
+            border-left: 4px solid #ffd700;
+            background: #2a2500;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .attenzione {
+            border-left: 4px solid #f44747;
+            background: #2a0000;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>1.7 — Metodi principali</h1>
+
+    <p>
+        In JavaScript quasi tutto è un oggetto e gli oggetti hanno <strong>metodi</strong>:
+        funzioni "attaccate" a un valore che lo manipolano o restituiscono informazioni su di esso.
+        Si chiamano con la notazione punto: <code>valore.metodo()</code>.
+    </p>
+
+    <div class="regola-oro">
+        <strong>Regola #1 — Le stringhe sono immutabili.</strong><br>
+        I metodi sulle stringhe <em>non modificano</em> la stringa originale: restituiscono sempre
+        una <em>nuova</em> stringa. Devi salvare il risultato in una variabile se vuoi usarlo.
+    </div>
+
+
+    <!-- =====================================================================
+         SEZIONE 1 — Metodi String
+         ===================================================================== -->
+    <h2>1. Metodi sulle stringhe (<code>String</code>)</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Metodo</th>
+                <th>Cosa fa</th>
+                <th>Restituisce</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><code>.length</code></td><td>Numero di caratteri (proprietà, non metodo)</td><td>number</td></tr>
+            <tr><td><code>.toUpperCase()</code></td><td>Converte in maiuscolo</td><td>string</td></tr>
+            <tr><td><code>.toLowerCase()</code></td><td>Converte in minuscolo</td><td>string</td></tr>
+            <tr><td><code>.trim()</code></td><td>Rimuove spazi iniziali e finali</td><td>string</td></tr>
+            <tr><td><code>.includes(sub)</code></td><td>Controlla se la sottostringa è presente</td><td>boolean</td></tr>
+            <tr><td><code>.startsWith(sub)</code></td><td>Controlla se inizia con sub</td><td>boolean</td></tr>
+            <tr><td><code>.endsWith(sub)</code></td><td>Controlla se finisce con sub</td><td>boolean</td></tr>
+            <tr><td><code>.indexOf(sub)</code></td><td>Indice della prima occorrenza (-1 se assente)</td><td>number</td></tr>
+            <tr><td><code>.slice(start, end)</code></td><td>Estrae una sottostringa [start, end)</td><td>string</td></tr>
+            <tr><td><code>.replace(old, new)</code></td><td>Sostituisce la prima occorrenza</td><td>string</td></tr>
+            <tr><td><code>.replaceAll(old, new)</code></td><td>Sostituisce tutte le occorrenze</td><td>string</td></tr>
+            <tr><td><code>.split(sep)</code></td><td>Divide la stringa in un array</td><td>array</td></tr>
+            <tr><td><code>.repeat(n)</code></td><td>Ripete la stringa n volte</td><td>string</td></tr>
+            <tr><td><code>.padStart(n, ch)</code></td><td>Aggiunge ch a sinistra fino a lunghezza n</td><td>string</td></tr>
+            <tr><td><code>.padEnd(n, ch)</code></td><td>Aggiunge ch a destra fino a lunghezza n</td><td>string</td></tr>
+        </tbody>
+    </table>
+
+    <div class="attenzione">
+        <strong>Regola #2 — length è una proprietà, non un metodo.</strong><br>
+        Si scrive <code>str.length</code> senza parentesi, non <code>str.length()</code>.
+        Se scrivi le parentesi ottieni un errore: <code>TypeError: str.length is not a function</code>.
+    </div>
+
+    <pre>
+let frase = <span class="ok">"  Ciao Mondo!  "</span>;
+
+<span class="comment">// .trim() — rimuove gli spazi iniziali e finali</span>
+let pulita = frase.trim();
+console.log(pulita);                 <span class="comment">// "Ciao Mondo!"</span>
+
+<span class="comment">// .length — numero di caratteri (dopo il trim)</span>
+console.log(pulita.length);          <span class="comment">// 11</span>
+
+<span class="comment">// .toUpperCase() / .toLowerCase()</span>
+console.log(pulita.toUpperCase());   <span class="comment">// "CIAO MONDO!"</span>
+console.log(pulita.toLowerCase());   <span class="comment">// "ciao mondo!"</span>
+
+<span class="comment">// REGOLA #1 in pratica: la stringa originale è intatta</span>
+console.log(pulita);                 <span class="comment">// "Ciao Mondo!"  ← invariata</span>
+
+<span class="comment">// .includes() — ricerca booleana</span>
+console.log(pulita.includes("Mondo")); <span class="comment">// true</span>
+console.log(pulita.includes("ciao")); <span class="comment">// false  ← case sensitive!</span>
+
+<span class="comment">// .startsWith() / .endsWith()</span>
+console.log(pulita.startsWith("Ciao")); <span class="comment">// true</span>
+console.log(pulita.endsWith("!"));      <span class="comment">// true</span>
+
+<span class="comment">// .indexOf() — posizione (0-based), -1 se non trovato</span>
+console.log(pulita.indexOf("Mondo"));  <span class="comment">// 5</span>
+console.log(pulita.indexOf("xyz"));    <span class="comment">// -1</span>
+
+<span class="comment">// .slice(start, end) — estrae sottostringa, end escluso</span>
+console.log(pulita.slice(5, 10));    <span class="comment">// "Mondo"</span>
+console.log(pulita.slice(-6));       <span class="comment">// "ondo!"  ← indice negativo: parte dalla fine</span>
+
+<span class="comment">// .replace() — sostituisce solo la PRIMA occorrenza</span>
+let ripetuta = <span class="ok">"ha ha ha"</span>;
+console.log(ripetuta.replace("ha", "no"));    <span class="comment">// "no ha ha"</span>
+
+<span class="comment">// .replaceAll() — sostituisce TUTTE le occorrenze</span>
+console.log(ripetuta.replaceAll("ha", "no")); <span class="comment">// "no no no"</span>
+
+<span class="comment">// .split() — divide in array</span>
+let csv = <span class="ok">"mario,luigi,peach"</span>;
+console.log(csv.split(","));         <span class="comment">// ["mario", "luigi", "peach"]</span>
+console.log(<span class="ok">"ciao"</span>.split(""));    <span class="comment">// ["c","i","a","o"]  ← split su stringa vuota</span>
+
+<span class="comment">// .repeat() — ripete la stringa</span>
+console.log(<span class="ok">"*"</span>.repeat(5));       <span class="comment">// "*****"</span>
+
+<span class="comment">// .padStart() / .padEnd() — utile per formattare output</span>
+console.log(<span class="ok">"7"</span>.padStart(3, "0")); <span class="comment">// "007"</span>
+console.log(<span class="ok">"hi"</span>.padEnd(5, "."));  <span class="comment">// "hi..."</span></pre>
+
+
+    <!-- =====================================================================
+         SEZIONE 2 — Metodi Number / Math
+         ===================================================================== -->
+    <h2>2. Metodi sui numeri e oggetto <code>Math</code></h2>
+
+    <div class="regola-oro">
+        <strong>Regola #3 — Math è un oggetto globale con metodi statici.</strong><br>
+        Non si istanzia: si usa direttamente come <code>Math.round()</code>, <code>Math.max()</code>, ecc.
+        È simile al modulo <code>math</code> di Python, ma senza import.
+    </div>
+
+    <div class="regola-oro">
+        <strong>Regola #4 — Math.random() restituisce un numero tra 0 (incluso) e 1 (escluso).</strong><br>
+        Per ottenere un intero casuale tra <code>min</code> e <code>max</code> (inclusi):<br>
+        <code>Math.floor(Math.random() * (max - min + 1)) + min</code>
+    </div>
+
+    <pre>
+<span class="comment">// ----- Metodi sull'istanza Number -----</span>
+
+let pi = 3.14159265;
+
+<span class="comment">// .toFixed(n) — arrotonda a n decimali, restituisce una STRINGA</span>
+console.log(pi.toFixed(2));          <span class="comment">// "3.14"  ← attenzione: è una stringa!</span>
+console.log(typeof pi.toFixed(2));   <span class="comment">// "string"</span>
+
+<span class="comment">// .toString() — converte il numero in stringa</span>
+console.log((255).toString());       <span class="comment">// "255"</span>
+console.log((255).toString(16));     <span class="comment">// "ff"  ← base 16 (esadecimale)</span>
+console.log((8).toString(2));        <span class="comment">// "1000" ← base 2 (binario)</span>
+
+<span class="comment">// ----- Metodi statici su Number -----</span>
+
+<span class="comment">// Number.isInteger() — controlla se il numero è intero</span>
+console.log(Number.isInteger(42));   <span class="comment">// true</span>
+console.log(Number.isInteger(3.14)); <span class="comment">// false</span>
+
+<span class="comment">// Number.isNaN() — versione affidabile di isNaN globale</span>
+console.log(Number.isNaN(NaN));      <span class="comment">// true</span>
+console.log(Number.isNaN("ciao"));   <span class="comment">// false  ← NON converte prima, più sicuro</span>
+console.log(isNaN("ciao"));          <span class="comment">// true   ← isNaN globale converte prima: pericoloso!</span>
+
+<span class="comment">// Number.isFinite() — controlla che non sia Infinity o NaN</span>
+console.log(Number.isFinite(42));    <span class="comment">// true</span>
+console.log(Number.isFinite(Infinity)); <span class="comment">// false</span>
+
+<span class="comment">// ----- Oggetto Math -----</span>
+
+<span class="comment">// Math.round() — arrotonda all'intero più vicino</span>
+console.log(Math.round(4.5));        <span class="comment">// 5</span>
+console.log(Math.round(4.4));        <span class="comment">// 4</span>
+
+<span class="comment">// Math.floor() — arrotonda VERSO IL BASSO (tronca)</span>
+console.log(Math.floor(4.9));        <span class="comment">// 4</span>
+console.log(Math.floor(-4.1));       <span class="comment">// -5  ← attenzione ai negativi!</span>
+
+<span class="comment">// Math.ceil() — arrotonda VERSO L'ALTO</span>
+console.log(Math.ceil(4.1));         <span class="comment">// 5</span>
+console.log(Math.ceil(-4.9));        <span class="comment">// -4  ← attenzione ai negativi!</span>
+
+<span class="comment">// Math.abs() — valore assoluto</span>
+console.log(Math.abs(-7));           <span class="comment">// 7</span>
+
+<span class="comment">// Math.max() / Math.min() — massimo e minimo tra argomenti</span>
+console.log(Math.max(3, 1, 4, 1, 5, 9)); <span class="comment">// 9</span>
+console.log(Math.min(3, 1, 4, 1, 5, 9)); <span class="comment">// 1</span>
+
+<span class="comment">// Math.pow() — potenza (equivalente a **)</span>
+console.log(Math.pow(2, 10));        <span class="comment">// 1024</span>
+console.log(2 ** 10);                <span class="comment">// 1024  ← sintassi moderna equivalente</span>
+
+<span class="comment">// Math.sqrt() — radice quadrata</span>
+console.log(Math.sqrt(16));          <span class="comment">// 4</span>
+
+<span class="comment">// Math.random() — numero casuale [0, 1)</span>
+console.log(Math.random());          <span class="comment">// es. 0.7341...  (varia ad ogni esecuzione)</span>
+
+<span class="comment">// REGOLA #4 in pratica: intero casuale da 1 a 6 (dado)</span>
+let dado = Math.floor(Math.random() * 6) + 1;
+console.log("Dado:", dado);          <span class="comment">// numero da 1 a 6</span>
+
+<span class="comment">// Math.PI e Math.E — costanti matematiche</span>
+console.log(Math.PI);                <span class="comment">// 3.141592653589793</span>
+console.log(Math.E);                 <span class="comment">// 2.718281828459045</span></pre>
+
+
+    <!-- =====================================================================
+         SEZIONE 3 — Metodi Array
+         ===================================================================== -->
+    <h2>3. Metodi sugli array</h2>
+
+    <div class="regola-oro">
+        <strong>Regola #5 — Alcuni metodi modificano l'array originale (mutating),
+        altri restituiscono un nuovo array senza modificarlo (non-mutating).</strong><br>
+        Conoscere questa distinzione evita bug difficili da trovare.
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Metodo</th>
+                <th>Cosa fa</th>
+                <th>Modifica l'originale?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><code>.push(el)</code></td><td>Aggiunge in fondo</td><td class="error">Sì</td></tr>
+            <tr><td><code>.pop()</code></td><td>Rimuove e restituisce l'ultimo</td><td class="error">Sì</td></tr>
+            <tr><td><code>.unshift(el)</code></td><td>Aggiunge in testa</td><td class="error">Sì</td></tr>
+            <tr><td><code>.shift()</code></td><td>Rimuove e restituisce il primo</td><td class="error">Sì</td></tr>
+            <tr><td><code>.splice(i, n)</code></td><td>Rimuove n elementi da indice i</td><td class="error">Sì</td></tr>
+            <tr><td><code>.reverse()</code></td><td>Inverte l'ordine</td><td class="error">Sì</td></tr>
+            <tr><td><code>.sort()</code></td><td>Ordina (default: lessicografico)</td><td class="error">Sì</td></tr>
+            <tr><td><code>.slice(s, e)</code></td><td>Estrae una porzione</td><td class="ok">No</td></tr>
+            <tr><td><code>.concat(arr)</code></td><td>Unisce due array</td><td class="ok">No</td></tr>
+            <tr><td><code>.map(fn)</code></td><td>Trasforma ogni elemento</td><td class="ok">No</td></tr>
+            <tr><td><code>.filter(fn)</code></td><td>Filtra elementi che soddisfano fn</td><td class="ok">No</td></tr>
+            <tr><td><code>.find(fn)</code></td><td>Primo elemento che soddisfa fn</td><td class="ok">No</td></tr>
+            <tr><td><code>.includes(el)</code></td><td>Controlla la presenza di el</td><td class="ok">No</td></tr>
+            <tr><td><code>.indexOf(el)</code></td><td>Indice di el (-1 se assente)</td><td class="ok">No</td></tr>
+            <tr><td><code>.join(sep)</code></td><td>Unisce elementi in una stringa</td><td class="ok">No</td></tr>
+            <tr><td><code>.forEach(fn)</code></td><td>Esegue fn per ogni elemento</td><td class="ok">No</td></tr>
+            <tr><td><code>.reduce(fn, init)</code></td><td>Riduce l'array a un singolo valore</td><td class="ok">No</td></tr>
+        </tbody>
+    </table>
+
+    <div class="attenzione">
+        <strong>Regola #6 — .sort() ordina come stringhe per default.</strong><br>
+        <code>[10, 9, 2].sort()</code> restituisce <code>[10, 2, 9]</code> perché confronta "10" < "2" lessicograficamente.
+        Per ordinare numeri correttamente usa il comparatore: <code>.sort((a, b) => a - b)</code>.
+    </div>
+
+    <pre>
+let frutti = [<span class="ok">"mela"</span>, <span class="ok">"banana"</span>, <span class="ok">"ciliegia"</span>];
+
+<span class="comment">// .push() — aggiunge in fondo, restituisce la nuova lunghezza</span>
+let nuovaLen = frutti.push(<span class="ok">"dattero"</span>);
+console.log(frutti);    <span class="comment">// ["mela","banana","ciliegia","dattero"]</span>
+console.log(nuovaLen);  <span class="comment">// 4</span>
+
+<span class="comment">// .pop() — rimuove l'ultimo e lo restituisce</span>
+let ultimo = frutti.pop();
+console.log(ultimo);    <span class="comment">// "dattero"</span>
+console.log(frutti);    <span class="comment">// ["mela","banana","ciliegia"]</span>
+
+<span class="comment">// .unshift() — aggiunge in testa</span>
+frutti.unshift(<span class="ok">"albicocca"</span>);
+console.log(frutti);    <span class="comment">// ["albicocca","mela","banana","ciliegia"]</span>
+
+<span class="comment">// .shift() — rimuove il primo e lo restituisce</span>
+let primo = frutti.shift();
+console.log(primo);     <span class="comment">// "albicocca"</span>
+console.log(frutti);    <span class="comment">// ["mela","banana","ciliegia"]</span>
+
+<span class="comment">// .includes() — ricerca booleana</span>
+console.log(frutti.includes(<span class="ok">"banana"</span>)); <span class="comment">// true</span>
+console.log(frutti.includes(<span class="ok">"kiwi"</span>));   <span class="comment">// false</span>
+
+<span class="comment">// .indexOf() — indice dell'elemento (-1 se non trovato)</span>
+console.log(frutti.indexOf(<span class="ok">"banana"</span>));  <span class="comment">// 1</span>
+console.log(frutti.indexOf(<span class="ok">"kiwi"</span>));    <span class="comment">// -1</span>
+
+<span class="comment">// .slice() — estrae senza modificare (come le stringhe)</span>
+let copia = frutti.slice(0, 2);
+console.log(copia);     <span class="comment">// ["mela","banana"]</span>
+console.log(frutti);    <span class="comment">// ["mela","banana","ciliegia"]  ← invariato</span>
+
+<span class="comment">// .join() — unisce in stringa (inverso di split)</span>
+console.log(frutti.join(<span class="ok">" - "</span>));       <span class="comment">// "mela - banana - ciliegia"</span>
+console.log(frutti.join(<span class="ok">""</span>));         <span class="comment">// "melebananaciliegia"</span>
+
+<span class="comment">// .reverse() — inverte L'ORIGINALE</span>
+let numeri = [1, 2, 3, 4, 5];
+numeri.reverse();
+console.log(numeri);    <span class="comment">// [5,4,3,2,1]  ← originale modificato!</span>
+
+<span class="comment">// .sort() con comparatore numerico (REGOLA #6)</span>
+let disordinati = [10, 9, 2, 100, 21];
+console.log(disordinati.sort());              <span class="comment">// [10,100,2,21,9]  ← SBAGLIATO!</span>
+console.log(disordinati.sort((a, b) => a - b)); <span class="comment">// [2,9,10,21,100] ← CORRETTO</span>
+
+<span class="comment">// .map() — trasforma ogni elemento in un nuovo array</span>
+let prezzi = [10, 20, 30];
+let scontati = prezzi.map(p => p * 0.9);
+console.log(scontati);  <span class="comment">// [9, 18, 27]</span>
+console.log(prezzi);    <span class="comment">// [10, 20, 30]  ← originale invariato</span>
+
+<span class="comment">// .filter() — restituisce elementi che soddisfano la condizione</span>
+let voti = [4, 7, 5, 8, 3, 9, 6];
+let promossi = voti.filter(v => v >= 6);
+console.log(promossi);  <span class="comment">// [7, 8, 9, 6]</span>
+
+<span class="comment">// .find() — restituisce il PRIMO elemento che soddisfa (undefined se nessuno)</span>
+let primoAlto = voti.find(v => v >= 8);
+console.log(primoAlto); <span class="comment">// 8</span>
+
+<span class="comment">// .forEach() — esegue una funzione per ogni elemento (non restituisce niente)</span>
+[<span class="ok">"a"</span>, <span class="ok">"b"</span>, <span class="ok">"c"</span>].forEach((el, i) => {
+    console.log(i, el);  <span class="comment">// 0 "a" | 1 "b" | 2 "c"</span>
+});
+
+<span class="comment">// .reduce() — accumula un risultato su tutti gli elementi</span>
+let somma = [1, 2, 3, 4, 5].reduce((acc, el) => acc + el, 0);
+console.log(somma);     <span class="comment">// 15</span>
+
+let prodotto = [1, 2, 3, 4, 5].reduce((acc, el) => acc * el, 1);
+console.log(prodotto);  <span class="comment">// 120</span></pre>
+
+    <div class="box">
+        <span class="note">💡 Concatenare metodi (method chaining):</span>
+        <pre style="margin: 10px 0 0 0;">
+let risultato = [1, 2, 3, 4, 5, 6]
+    .filter(n => n % 2 === 0)   <span class="comment">// [2, 4, 6]   ← solo i pari</span>
+    .map(n => n * n)             <span class="comment">// [4, 16, 36] ← elevati al quadrato</span>
+    .join(", ");                 <span class="comment">// "4, 16, 36" ← uniti in stringa</span>
+
+console.log(risultato);         <span class="comment">// "4, 16, 36"</span></pre>
+    </div>
+
+
+    <!-- =====================================================================
+         SEZIONE 4 — Esercizi Console
+         ===================================================================== -->
+    <h2>4. Esercizi (controlla la Console — F12)</h2>
+    <p>Apri gli strumenti sviluppatore (F12 → Console) e ricarica la pagina per vedere i risultati.</p>
+
+    <script>
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 1 — Metodi String
+         * =====================================================================
+         * Regola #1: le stringhe sono immutabili.
+         * Regola #2: .length è una proprietà, non un metodo (no parentesi).
+         */
+
+        console.log("--- ESERCIZIO 1: metodi String ---");
+
+        let frase = "  Ciao Mondo!  ";
+
+        // Trim e lunghezza
+        let pulita = frase.trim();
+        console.log(pulita);                    // "Ciao Mondo!"
+        console.log(pulita.length);             // 11  ← proprietà, no ()
+
+        // Case
+        console.log(pulita.toUpperCase());      // "CIAO MONDO!"
+        console.log(pulita.toLowerCase());      // "ciao mondo!"
+        console.log(pulita);                    // "Ciao Mondo!"  ← REGOLA #1: invariata
+
+        // Ricerca
+        console.log(pulita.includes("Mondo"));  // true
+        console.log(pulita.includes("ciao"));   // false  ← case sensitive
+        console.log(pulita.startsWith("Ciao")); // true
+        console.log(pulita.endsWith("!"));      // true
+        console.log(pulita.indexOf("Mondo"));   // 5
+        console.log(pulita.indexOf("xyz"));     // -1
+
+        // Estrazione e sostituzione
+        console.log(pulita.slice(5, 10));       // "Mondo"
+        console.log(pulita.slice(-6));          // "ondo!"  ← indice negativo
+
+        let ripetuta = "ha ha ha";
+        console.log(ripetuta.replace("ha", "no"));    // "no ha ha"  ← solo la prima
+        console.log(ripetuta.replaceAll("ha", "no")); // "no no no"  ← tutte
+
+        // Split / Join
+        let csv = "mario,luigi,peach";
+        let nomi = csv.split(",");
+        console.log(nomi);                      // ["mario","luigi","peach"]
+        console.log(nomi.join(" | "));          // "mario | luigi | peach"
+
+        // Repeat / Pad
+        console.log("*".repeat(5));             // "*****"
+        console.log("7".padStart(3, "0"));      // "007"
+        console.log("hi".padEnd(5, "."));       // "hi..."
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 2 — Metodi Number e Math
+         * =====================================================================
+         * Regola #3: Math è un oggetto globale, non si istanzia.
+         * Regola #4: Math.random() restituisce [0, 1).
+         */
+
+        console.log("\n--- ESERCIZIO 2: Number e Math ---");
+
+        let pi = 3.14159265;
+
+        // toFixed restituisce una STRINGA
+        console.log(pi.toFixed(2));             // "3.14"
+        console.log(typeof pi.toFixed(2));      // "string"
+
+        // toString con base
+        console.log((255).toString(16));        // "ff"
+        console.log((8).toString(2));           // "1000"
+
+        // Number statico
+        console.log(Number.isInteger(42));      // true
+        console.log(Number.isInteger(3.14));    // false
+        console.log(Number.isNaN(NaN));         // true
+        console.log(Number.isNaN("ciao"));      // false  ← più affidabile di isNaN globale
+        console.log(isNaN("ciao"));             // true   ← isNaN globale converte prima
+
+        // Math — REGOLA #3: nessun new, si usa direttamente
+        console.log(Math.round(4.5));           // 5
+        console.log(Math.round(4.4));           // 4
+        console.log(Math.floor(4.9));           // 4
+        console.log(Math.floor(-4.1));          // -5  ← negativi vanno "in basso"
+        console.log(Math.ceil(4.1));            // 5
+        console.log(Math.abs(-7));              // 7
+        console.log(Math.max(3, 1, 9, 5));      // 9
+        console.log(Math.min(3, 1, 9, 5));      // 1
+        console.log(Math.pow(2, 10));           // 1024
+        console.log(Math.sqrt(16));             // 4
+        console.log(Math.PI);                   // 3.141592653589793
+
+        // REGOLA #4: dado da 1 a 6
+        let dado = Math.floor(Math.random() * 6) + 1;
+        console.log("Dado:", dado);             // numero da 1 a 6
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 3 — Metodi Array (mutating vs non-mutating)
+         * =====================================================================
+         * Regola #5: alcuni metodi modificano l'originale, altri no.
+         * Regola #6: .sort() ordina come stringhe — usa comparatore per numeri.
+         */
+
+        console.log("\n--- ESERCIZIO 3: metodi Array ---");
+
+        let frutti = ["mela", "banana", "ciliegia"];
+
+        // MUTATING — modificano l'array originale
+        frutti.push("dattero");
+        console.log(frutti);            // ["mela","banana","ciliegia","dattero"]
+
+        console.log(frutti.pop());      // "dattero"
+        console.log(frutti);            // ["mela","banana","ciliegia"]
+
+        frutti.unshift("albicocca");
+        console.log(frutti);            // ["albicocca","mela","banana","ciliegia"]
+
+        console.log(frutti.shift());    // "albicocca"
+        console.log(frutti);            // ["mela","banana","ciliegia"]
+
+        // NON-MUTATING — restituiscono nuovo valore, originale invariato
+        console.log(frutti.includes("banana")); // true
+        console.log(frutti.indexOf("banana"));  // 1
+
+        let copia = frutti.slice(0, 2);
+        console.log(copia);             // ["mela","banana"]
+        console.log(frutti);            // ["mela","banana","ciliegia"]  ← invariato
+
+        console.log(frutti.join(" - ")); // "mela - banana - ciliegia"
+
+        // REGOLA #6: sort numerico sbagliato vs corretto
+        let numeri = [10, 9, 2, 100, 21];
+        console.log([...numeri].sort());              // [10,100,2,21,9]  ← SBAGLIATO
+        console.log([...numeri].sort((a, b) => a - b)); // [2,9,10,21,100] ← CORRETTO
+
+        // map, filter, find
+        let prezzi = [10, 20, 30];
+        console.log(prezzi.map(p => p * 0.9));        // [9, 18, 27]
+        console.log(prezzi);                           // [10, 20, 30]  ← invariato
+
+        let voti = [4, 7, 5, 8, 3, 9, 6];
+        console.log(voti.filter(v => v >= 6));         // [7, 8, 9, 6]
+        console.log(voti.find(v => v >= 8));           // 8  ← solo il primo
+
+        // reduce
+        console.log([1, 2, 3, 4, 5].reduce((acc, el) => acc + el, 0)); // 15
+
+        // Method chaining
+        let risultato = [1, 2, 3, 4, 5, 6]
+            .filter(n => n % 2 === 0)   // [2, 4, 6]
+            .map(n => n * n)             // [4, 16, 36]
+            .join(", ");                 // "4, 16, 36"
+        console.log(risultato);          // "4, 16, 36"
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 4 — Sfida: combinare tutto
+         * =====================================================================
+         * Scenario: elaborare dati di studenti.
+         */
+
+        console.log("\n--- ESERCIZIO 4: sfida combinata ---");
+
+        let studenti = ["Alice 8", "Bob 5", "Carlo 9", "Diana 6", "Edo 4"];
+
+        // Estrai solo i nomi degli studenti promossi (voto >= 6)
+        let promossi = studenti
+            .filter(s => Number(s.split(" ")[1]) >= 6)
+            .map(s => s.split(" ")[0]);
+
+        console.log("Promossi:", promossi.join(", ")); // "Alice, Carlo, Diana"
+
+        // Calcola la media dei voti
+        let tuttiVoti = studenti.map(s => Number(s.split(" ")[1]));
+        let media = tuttiVoti.reduce((acc, v) => acc + v, 0) / tuttiVoti.length;
+        console.log("Media:", media.toFixed(1));       // "6.4"
+
+        // Crea una tabella formattata (padEnd per allineamento)
+        console.log("\nTabella risultati:");
+        studenti.forEach(s => {
+            let [nome, voto] = s.split(" ");
+            let esito = Number(voto) >= 6 ? "PROMOSSO" : "RIMANDATO";
+            console.log(nome.padEnd(8) + "voto: " + voto + "  " + esito);
+        });
+
+    </script>
+
+</body>
+
+</html>

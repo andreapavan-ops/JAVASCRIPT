@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<!--
+    File: js1_9cicli.html
+    Argomento: Cicli (for, while, do…while, for…of, for…in) + tabella Python↔JS
+    Prerequisiti: js1_1 … js1_8
+
+    COME USARE QUESTO FILE:
+    Apri il browser, vai su DevTools (Cmd+Option+J) → Console,
+    poi ricarica la pagina per vedere tutti i log degli esempi.
+-->
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>1.9 — Cicli</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        h1 { color: #569cd6; }
+        h2 { color: #4ec9b0; margin-top: 40px; }
+        h3 { color: #9cdcfe; }
+
+        pre {
+            background: #252526;
+            border-left: 4px solid #569cd6;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .ok      { color: #4ec9b0; }
+        .error   { color: #f44747; }
+        .note    { color: #ffd700; }
+        .comment { color: #6a9955; }
+        .kw      { color: #569cd6; }
+        .str     { color: #ce9178; }
+        .num     { color: #b5cea8; }
+
+        .box {
+            background: #252526;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 16px 0;
+        }
+        .regola-oro {
+            border-left: 4px solid #ffd700;
+            background: #2a2500;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .attenzione {
+            border-left: 4px solid #f44747;
+            background: #2a0000;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px 14px;
+            text-align: left;
+        }
+        th { background: #2d2d2d; color: #569cd6; }
+        tr:nth-child(even) { background: #252526; }
+        td code { color: #ce9178; }
+    </style>
+</head>
+
+<body>
+
+<h1>1.9 — Cicli</h1>
+
+<p>
+    JavaScript ha cinque tipi di ciclo. Tutti eseguono un blocco di codice ripetutamente,
+    ma differiscono per <strong>quando controllano la condizione</strong> e
+    <strong>su cosa iterano</strong>.
+</p>
+
+<table>
+    <thead>
+        <tr><th>Ciclo</th><th>Usa quando…</th><th>Esiste in Python?</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>for</code></td><td>Conosci il numero di iterazioni</td><td>Sì (<code>for i in range(n)</code>)</td></tr>
+        <tr><td><code>while</code></td><td>Condizione booleana generica</td><td>Sì (identico)</td></tr>
+        <tr><td><code>do...while</code></td><td>Vuoi eseguire almeno una volta</td><td>No</td></tr>
+        <tr><td><code>for...of</code></td><td>Iterare sui <strong>valori</strong> di un array/stringa</td><td>Sì (<code>for x in lista</code>)</td></tr>
+        <tr><td><code>for...in</code></td><td>Iterare sulle <strong>chiavi</strong> di un oggetto</td><td>Sì (<code>for k in dizionario</code>)</td></tr>
+    </tbody>
+</table>
+
+
+<!-- =====================================================================
+     SEZIONE 1 — for classico
+     ===================================================================== -->
+<h2>1. <code>for</code> classico</h2>
+
+<p>
+    Il <code>for</code> ha tre parti nella testata, separate da <code>;</code>:
+    inizializzazione, condizione di continuazione, aggiornamento.
+</p>
+
+<pre>
+<span class="kw">for</span> (inizializzazione; condizione; aggiornamento) {
+    <span class="comment">// corpo</span>
+}</pre>
+
+<div class="box">
+    <span class="note">Confronto con Python:</span>
+    <pre style="margin: 8px 0 0 0;">
+<span class="comment">// JavaScript</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="num">5</span>; i++) {
+    console.log(i);               <span class="comment">// 0 1 2 3 4</span>
+}
+
+<span class="comment">// Python — equivalente</span>
+<span class="comment">// for i in range(5):</span>
+<span class="comment">//     print(i)</span></pre>
+</div>
+
+<div class="regola-oro">
+    <strong>Regola #1 — Usa <code>let</code>, non <code>var</code>, per il contatore.</strong><br>
+    Con <code>var</code> il contatore "sfugge" fuori dal blocco <code>for</code> ed è accessibile
+    dopo il ciclo. Con <code>let</code> è confinato all'interno del ciclo — comportamento
+    atteso e sicuro.
+</div>
+
+<pre>
+<span class="comment">// ── Contare in avanti ─────────────────────────────────────────────────</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="num">5</span>; i++) {
+    console.log(i);               <span class="comment">// 0, 1, 2, 3, 4</span>
+}
+
+<span class="comment">// ── Contare all'indietro ──────────────────────────────────────────────</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">5</span>; i > <span class="num">0</span>; i--) {
+    console.log(i);               <span class="comment">// 5, 4, 3, 2, 1</span>
+}
+
+<span class="comment">// ── Passo diverso da 1 ────────────────────────────────────────────────</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i <= <span class="num">10</span>; i += <span class="num">2</span>) {
+    console.log(i);               <span class="comment">// 0, 2, 4, 6, 8, 10</span>
+}
+
+<span class="comment">// ── Iterare un array con indice ───────────────────────────────────────</span>
+<span class="kw">let</span> colori = [<span class="str">"rosso"</span>, <span class="str">"verde"</span>, <span class="str">"blu"</span>];
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < colori.length; i++) {
+    console.log(i, colori[i]);    <span class="comment">// 0 "rosso" | 1 "verde" | 2 "blu"</span>
+}
+
+<span class="comment">// REGOLA #1 — var sfugge al blocco (evitare!)</span>
+<span class="kw">for</span> (<span class="kw">var</span> j = <span class="num">0</span>; j < <span class="num">3</span>; j++) { <span class="comment">/* ... */</span> }
+console.log(j);                   <span class="comment">// 3 ← j esiste ancora! con let sarebbe ReferenceError</span></pre>
+
+
+<!-- =====================================================================
+     SEZIONE 2 — while
+     ===================================================================== -->
+<h2>2. <code>while</code></h2>
+
+<p>
+    Controlla la condizione <strong>prima</strong> di ogni iterazione.
+    Se la condizione è già falsa all'inizio, il corpo non viene mai eseguito.
+    Sintassi quasi identica a Python — cambiano solo le parentesi.
+</p>
+
+<pre>
+<span class="comment">// ── Esempio base ──────────────────────────────────────────────────────</span>
+<span class="kw">let</span> i = <span class="num">0</span>;
+<span class="kw">while</span> (i < <span class="num">5</span>) {
+    console.log(i);   <span class="comment">// 0, 1, 2, 3, 4</span>
+    i++;              <span class="comment">// ⚠️ senza questo diventa un loop infinito!</span>
+}
+
+<span class="comment">// ── Condizione mai vera → corpo non eseguito ──────────────────────────</span>
+<span class="kw">let</span> x = <span class="num">10</span>;
+<span class="kw">while</span> (x < <span class="num">5</span>) {
+    console.log(<span class="str">"mai eseguito"</span>);
+}
+console.log(<span class="str">"dopo il while"</span>);   <span class="comment">// "dopo il while"  ← il while è stato saltato</span>
+
+<span class="comment">// ── Uso tipico: attendere un input valido ─────────────────────────────</span>
+<span class="comment">// (simulato senza prompt per non bloccare la pagina)</span>
+<span class="kw">let</span> tentativi = <span class="num">0</span>;
+<span class="kw">let</span> numeroSegreto = <span class="num">7</span>;
+<span class="kw">let</span> tentativo = <span class="num">0</span>;          <span class="comment">// valore fittizio per far partire il loop</span>
+
+<span class="kw">while</span> (tentativo !== numeroSegreto) {
+    tentativi++;
+    tentativo = tentativi;    <span class="comment">// simuliamo un input crescente</span>
+}
+console.log(<span class="str">"Trovato in"</span>, tentativi, <span class="str">"tentativi"</span>);   <span class="comment">// "Trovato in 7 tentativi"</span></pre>
+
+<div class="attenzione">
+    <strong>Regola #2 — Ogni ciclo deve avere una via d'uscita garantita.</strong><br>
+    Assicurati sempre che la condizione del <code>while</code> diventi <code>false</code>
+    ad un certo punto, oppure usa <code>break</code> per uscire. Un loop infinito
+    congela il browser.
+</div>
+
+
+<!-- =====================================================================
+     SEZIONE 3 — do...while
+     ===================================================================== -->
+<h2>3. <code>do...while</code> (non esiste in Python)</h2>
+
+<p>
+    Esegue il corpo <strong>almeno una volta</strong>, poi controlla la condizione.
+    La condizione è in fondo, non all'inizio.
+</p>
+
+<pre>
+<span class="kw">do</span> {
+    <span class="comment">// corpo — eseguito ALMENO UNA VOLTA</span>
+} <span class="kw">while</span> (condizione);   <span class="comment">// ← punto e virgola obbligatorio!</span></pre>
+
+<div class="regola-oro">
+    <strong>Regola #3 — <code>do...while</code> è perfetto quando serve almeno un'esecuzione.</strong><br>
+    Il caso più comune è chiedere un input all'utente: devi mostrare il <code>prompt</code>
+    almeno una volta prima di poter controllare la risposta. Dichiarare la variabile
+    come <code>let risposta;</code> (senza valore iniziale = <code>undefined</code>) è corretto
+    perché il valore viene assegnato prima che la condizione venga valutata.
+</div>
+
+<pre>
+<span class="comment">// ── Differenza visiva: while vs do...while ────────────────────────────</span>
+<span class="kw">let</span> n = <span class="num">10</span>;
+
+<span class="comment">// while: condizione falsa subito → corpo MAI eseguito</span>
+<span class="kw">while</span> (n < <span class="num">5</span>) {
+    console.log(<span class="str">"while:"</span>, n);   <span class="comment">// non stampato</span>
+}
+
+<span class="comment">// do...while: corpo eseguito ALMENO UNA VOLTA anche se la condizione è falsa</span>
+<span class="kw">do</span> {
+    console.log(<span class="str">"do...while:"</span>, n);   <span class="comment">// "do...while: 10"  ← eseguito una volta</span>
+} <span class="kw">while</span> (n < <span class="num">5</span>);                    <span class="comment">// poi la condizione è falsa → si ferma</span>
+
+<span class="comment">// ── REGOLA #3: pattern con prompt ────────────────────────────────────</span>
+<span class="comment">// (spiegazione — non eseguiamo prompt per non bloccare la pagina)</span>
+<span class="comment">//</span>
+<span class="comment">// let risposta;           ← undefined: ok, non viene letta prima dell'assegnazione</span>
+<span class="comment">// do {</span>
+<span class="comment">//     risposta = prompt("Scrivi 'esci' per uscire:");</span>
+<span class="comment">//     // ↑ qui risposta riceve un valore PRIMA che la condizione venga valutata</span>
+<span class="comment">// } while (risposta !== "esci");  ← ora risposta è una stringa, non undefined</span>
+
+<span class="comment">// ── Simulazione senza prompt ──────────────────────────────────────────</span>
+<span class="kw">let</span> risposte = [<span class="str">"no"</span>, <span class="str">"ancora no"</span>, <span class="str">"esci"</span>];   <span class="comment">// input simulati</span>
+<span class="kw">let</span> risposta;
+<span class="kw">let</span> idx = <span class="num">0</span>;
+
+<span class="kw">do</span> {
+    risposta = risposte[idx++];
+    console.log(<span class="str">"Input ricevuto:"</span>, risposta);
+} <span class="kw">while</span> (risposta !== <span class="str">"esci"</span>);
+
+console.log(<span class="str">"Uscito dal loop"</span>);
+<span class="comment">// "Input ricevuto: no"</span>
+<span class="comment">// "Input ricevuto: ancora no"</span>
+<span class="comment">// "Input ricevuto: esci"</span>
+<span class="comment">// "Uscito dal loop"</span></pre>
+
+
+<!-- =====================================================================
+     SEZIONE 4 — for...of
+     ===================================================================== -->
+<h2>4. <code>for...of</code> — iterare sui valori</h2>
+
+<p>
+    Itera sui <strong>valori</strong> di qualsiasi oggetto iterabile: array, stringhe, Set, Map.
+    È l'equivalente del <code>for x in lista</code> di Python.
+</p>
+
+<div class="box">
+    <span class="note">Confronto con Python:</span>
+    <pre style="margin: 8px 0 0 0;">
+<span class="comment">// JavaScript</span>
+<span class="kw">let</span> frutti = [<span class="str">"mela"</span>, <span class="str">"banana"</span>, <span class="str">"arancia"</span>];
+<span class="kw">for</span> (<span class="kw">let</span> frutto <span class="kw">of</span> frutti) {
+    console.log(frutto);   <span class="comment">// "mela", "banana", "arancia"</span>
+}
+
+<span class="comment">// Python — equivalente</span>
+<span class="comment">// for frutto in frutti:</span>
+<span class="comment">//     print(frutto)</span></pre>
+</div>
+
+<pre>
+<span class="comment">// ── Su array ──────────────────────────────────────────────────────────</span>
+<span class="kw">let</span> numeri = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>];
+<span class="kw">for</span> (<span class="kw">let</span> n <span class="kw">of</span> numeri) {
+    console.log(n);           <span class="comment">// 10, 20, 30</span>
+}
+
+<span class="comment">// ── Su stringa (itera carattere per carattere) ────────────────────────</span>
+<span class="kw">for</span> (<span class="kw">let</span> ch <span class="kw">of</span> <span class="str">"ciao"</span>) {
+    console.log(ch);          <span class="comment">// "c", "i", "a", "o"</span>
+}
+
+<span class="comment">// ── Con indice: usa entries() ─────────────────────────────────────────</span>
+<span class="comment">// Se hai bisogno dell'indice oltre al valore, usa .entries()</span>
+<span class="kw">let</span> colori = [<span class="str">"rosso"</span>, <span class="str">"verde"</span>, <span class="str">"blu"</span>];
+<span class="kw">for</span> (<span class="kw">let</span> [i, colore] <span class="kw">of</span> colori.entries()) {
+    console.log(i, colore);   <span class="comment">// 0 "rosso" | 1 "verde" | 2 "blu"</span>
+}
+<span class="comment">// Equivalente Python: for i, colore in enumerate(colori)</span></pre>
+
+
+<!-- =====================================================================
+     SEZIONE 5 — for...in
+     ===================================================================== -->
+<h2>5. <code>for...in</code> — iterare sulle chiavi di un oggetto</h2>
+
+<p>
+    Itera sulle <strong>chiavi</strong> (proprietà enumerabili) di un oggetto.
+    Il valore si ottiene con <code>oggetto[chiave]</code>.
+</p>
+
+<div class="box">
+    <span class="note">Confronto con Python:</span>
+    <pre style="margin: 8px 0 0 0;">
+<span class="comment">// JavaScript</span>
+<span class="kw">let</span> persona = { nome: <span class="str">"Mario"</span>, eta: <span class="num">20</span>, citta: <span class="str">"Roma"</span> };
+<span class="kw">for</span> (<span class="kw">let</span> chiave <span class="kw">in</span> persona) {
+    console.log(`${chiave}: ${persona[chiave]}`);
+}
+<span class="comment">// "nome: Mario" | "eta: 20" | "citta: Roma"</span>
+
+<span class="comment">// Python — equivalente</span>
+<span class="comment">// for chiave in persona:</span>
+<span class="comment">//     print(f"{chiave}: {persona[chiave]}")</span></pre>
+</div>
+
+<div class="attenzione">
+    <strong>Regola #4 — Non usare <code>for...in</code> su un array.</strong><br>
+    Su un array, <code>for...in</code> itera sugli <em>indici come stringhe</em>
+    (<code>"0"</code>, <code>"1"</code>…), non sui valori. Può anche includere proprietà
+    aggiunte al prototipo. Per gli array usa sempre <code>for...of</code> o <code>.forEach()</code>.
+</div>
+
+<pre>
+<span class="comment">// ── for...in su oggetto (uso corretto) ────────────────────────────────</span>
+<span class="kw">let</span> prodotto = { nome: <span class="str">"Laptop"</span>, prezzo: <span class="num">999</span>, disponibile: <span class="kw">true</span> };
+
+<span class="kw">for</span> (<span class="kw">let</span> chiave <span class="kw">in</span> prodotto) {
+    console.log(chiave, <span class="str">"→"</span>, prodotto[chiave]);
+}
+<span class="comment">// "nome → Laptop"</span>
+<span class="comment">// "prezzo → 999"</span>
+<span class="comment">// "disponibile → true"</span>
+
+<span class="comment">// ── for...in su array (evitare — REGOLA #4) ───────────────────────────</span>
+<span class="kw">let</span> arr = [<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span>];
+<span class="kw">for</span> (<span class="kw">let</span> i <span class="kw">in</span> arr) {
+    console.log(typeof i, i);   <span class="comment">// "string" "0" | "string" "1" | "string" "2"</span>
+}                               <span class="comment">// ← gli indici sono stringhe, non numeri!</span>
+
+<span class="comment">// ✅ Modo corretto per array: for...of</span>
+<span class="kw">for</span> (<span class="kw">let</span> el <span class="kw">of</span> arr) {
+    console.log(el);            <span class="comment">// "a", "b", "c"</span>
+}</pre>
+
+
+<!-- =====================================================================
+     SEZIONE 6 — break e continue
+     ===================================================================== -->
+<h2>6. <code>break</code> e <code>continue</code></h2>
+
+<p>
+    Funzionano esattamente come in Python: <code>break</code> esce dal ciclo,
+    <code>continue</code> salta all'iterazione successiva.
+</p>
+
+<pre>
+<span class="comment">// ── break e continue insieme ──────────────────────────────────────────</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="num">10</span>; i++) {
+    <span class="kw">if</span> (i === <span class="num">3</span>) <span class="kw">continue</span>;   <span class="comment">// salta il 3 → va a i=4</span>
+    <span class="kw">if</span> (i === <span class="num">7</span>) <span class="kw">break</span>;      <span class="comment">// esce quando i=7 → non stampa 7,8,9</span>
+    console.log(i);            <span class="comment">// 0, 1, 2, 4, 5, 6</span>
+}
+
+<span class="comment">// ── break in un while ─────────────────────────────────────────────────</span>
+<span class="kw">let</span> somma = <span class="num">0</span>;
+<span class="kw">let</span> k = <span class="num">1</span>;
+<span class="kw">while</span> (<span class="kw">true</span>) {              <span class="comment">// loop apparentemente infinito</span>
+    somma += k;
+    <span class="kw">if</span> (somma > <span class="num">20</span>) <span class="kw">break</span>;  <span class="comment">// ← la vera condizione di uscita</span>
+    k++;
+}
+console.log(<span class="str">"Somma:"</span>, somma, <span class="str">"k:"</span>, k);   <span class="comment">// "Somma: 21 k: 6"</span>
+
+<span class="comment">// ── continue per saltare elementi in un array ─────────────────────────</span>
+<span class="kw">let</span> voti = [<span class="num">7</span>, <span class="num">4</span>, <span class="num">9</span>, <span class="num">3</span>, <span class="num">8</span>, <span class="num">5</span>];
+console.log(<span class="str">"Voti sufficienti:"</span>);
+<span class="kw">for</span> (<span class="kw">let</span> voto <span class="kw">of</span> voti) {
+    <span class="kw">if</span> (voto < <span class="num">6</span>) <span class="kw">continue</span>;   <span class="comment">// salta i voti insufficienti</span>
+    console.log(voto);           <span class="comment">// 7, 9, 8</span>
+}</pre>
+
+
+<!-- =====================================================================
+     SEZIONE 7 — Esercizi Console
+     ===================================================================== -->
+<h2>7. Esercizi (controlla la Console — F12)</h2>
+
+<script>
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 1 — for classico
+     * =====================================================================
+     * Regola #1: usa let, non var, per il contatore.
+     */
+
+    console.log("--- ESERCIZIO 1: for classico ---");
+
+    // Contare in avanti
+    for (let i = 0; i < 5; i++) {
+        console.log(i);           // 0 1 2 3 4
+    }
+
+    // Contare all'indietro
+    for (let i = 5; i > 0; i--) {
+        console.log(i);           // 5 4 3 2 1
+    }
+
+    // Passo 2
+    for (let i = 0; i <= 10; i += 2) {
+        console.log(i);           // 0 2 4 6 8 10
+    }
+
+    // Iterare array con indice
+    let colori = ["rosso", "verde", "blu"];
+    for (let i = 0; i < colori.length; i++) {
+        console.log(i, colori[i]); // 0 "rosso" | 1 "verde" | 2 "blu"
+    }
+
+    // REGOLA #1: var sfugge al blocco
+    for (var j = 0; j < 3; j++) { /* niente */ }
+    console.log("j dopo il for:", j);  // 3 ← sfugge! con let sarebbe errore
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 2 — while
+     * =====================================================================
+     * Regola #2: ogni loop deve avere una via d'uscita garantita.
+     */
+
+    console.log("\n--- ESERCIZIO 2: while ---");
+
+    let i = 0;
+    while (i < 5) {
+        console.log(i);   // 0 1 2 3 4
+        i++;              // ← senza questo: loop infinito!
+    }
+
+    // Condizione subito falsa → corpo mai eseguito
+    let x = 10;
+    while (x < 5) {
+        console.log("mai");
+    }
+    console.log("dopo il while:", x);  // "dopo il while: 10"
+
+    // Calcolo con while
+    let tentativi = 0;
+    let val = 0;
+    while (val !== 7) {
+        tentativi++;
+        val = tentativi;  // simulazione input
+    }
+    console.log("Trovato in", tentativi, "tentativi");  // 7
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 3 — do...while
+     * =====================================================================
+     * Regola #3: do...while esegue il corpo almeno una volta.
+     *            Dichiarare la variabile senza valore è corretto.
+     */
+
+    console.log("\n--- ESERCIZIO 3: do...while ---");
+
+    // Confronto: n=10 non soddisfa la condizione n<5
+    let n = 10;
+
+    while (n < 5) {
+        console.log("while:", n);   // non stampato
+    }
+
+    do {
+        console.log("do...while:", n);  // "do...while: 10"  ← eseguito una volta
+    } while (n < 5);
+
+    // Pattern con risposta simulata
+    let risposte = ["no", "ancora no", "esci"];
+    let risposta;   // undefined — corretto perché viene assegnata prima del controllo
+    let idx = 0;
+
+    do {
+        risposta = risposte[idx++];
+        console.log("Input:", risposta);
+    } while (risposta !== "esci");
+
+    console.log("Loop terminato");
+    // "Input: no"
+    // "Input: ancora no"
+    // "Input: esci"
+    // "Loop terminato"
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 4 — for...of
+     * =====================================================================
+     */
+
+    console.log("\n--- ESERCIZIO 4: for...of ---");
+
+    // Su array
+    let frutti = ["mela", "banana", "arancia"];
+    for (let frutto of frutti) {
+        console.log(frutto);  // "mela", "banana", "arancia"
+    }
+
+    // Su stringa
+    for (let ch of "ciao") {
+        console.log(ch);      // "c", "i", "a", "o"
+    }
+
+    // Con indice tramite .entries()
+    for (let [i, colore] of colori.entries()) {
+        console.log(i, colore);  // 0 "rosso" | 1 "verde" | 2 "blu"
+    }
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 5 — for...in
+     * =====================================================================
+     * Regola #4: non usare for...in su array — usa for...of.
+     */
+
+    console.log("\n--- ESERCIZIO 5: for...in ---");
+
+    let persona = { nome: "Mario", eta: 20, citta: "Roma" };
+    for (let chiave in persona) {
+        console.log(`${chiave}: ${persona[chiave]}`);
+    }
+    // "nome: Mario" | "eta: 20" | "citta: Roma"
+
+    // REGOLA #4: for...in su array → indici come STRINGHE (evitare!)
+    let arr = ["a", "b", "c"];
+    for (let i in arr) {
+        console.log(typeof i, i);  // "string" "0" | "string" "1" | "string" "2"
+    }
+
+    // ✅ Corretto per array
+    for (let el of arr) {
+        console.log(el);           // "a", "b", "c"
+    }
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 6 — break e continue
+     * =====================================================================
+     */
+
+    console.log("\n--- ESERCIZIO 6: break e continue ---");
+
+    for (let i = 0; i < 10; i++) {
+        if (i === 3) continue;  // salta il 3
+        if (i === 7) break;     // esce al 7
+        console.log(i);         // 0, 1, 2, 4, 5, 6
+    }
+
+    // Voti sufficienti
+    let voti = [7, 4, 9, 3, 8, 5];
+    let sufficienti = [];
+    for (let voto of voti) {
+        if (voto < 6) continue;
+        sufficienti.push(voto);
+    }
+    console.log("Sufficienti:", sufficienti);  // [7, 9, 8]
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 7 — Sfida: tutti i cicli combinati
+     * =====================================================================
+     * Calcola la tabellina del 7 con for, cerca un elemento con while,
+     * conta le chiavi di un oggetto con for...in.
+     */
+
+    console.log("\n--- ESERCIZIO 7: sfida ---");
+
+    // Tabellina del 7 con for
+    console.log("Tabellina del 7:");
+    for (let i = 1; i <= 10; i++) {
+        console.log(`7 × ${i} = ${7 * i}`);
+    }
+
+    // Cerca il primo numero maggiore di 15 in un array con while
+    let numeri = [3, 8, 12, 19, 5, 22, 7];
+    let pos = 0;
+    while (pos < numeri.length && numeri[pos] <= 15) {
+        pos++;
+    }
+    console.log("Primo >15:", numeri[pos], "all'indice", pos);  // 19 all'indice 3
+
+    // Conta quante chiavi ha un oggetto con for...in
+    let config = { tema: "scuro", lingua: "it", notifiche: true, volume: 80 };
+    let numChiavi = 0;
+    for (let k in config) {
+        numChiavi++;
+    }
+    console.log("Chiavi:", numChiavi);  // 4
+
+    // Somma dei quadrati dei numeri pari da 1 a 20
+    let sommaQuadrati = 0;
+    for (let i = 1; i <= 20; i++) {
+        if (i % 2 !== 0) continue;   // salta i dispari
+        sommaQuadrati += i * i;
+    }
+    console.log("Somma quadrati dei pari 1-20:", sommaQuadrati);  // 1540
+
+</script>
+
+
+<!-- =====================================================================
+     SEZIONE 8 — Tabella riepilogativa Python ↔ JavaScript
+     ===================================================================== -->
+<h2 id="tabella">1.10 — Tabella riepilogativa Python ↔ JavaScript</h2>
+
+<p>Riepilogo di tutti i concetti visti nelle lezioni 1.1 — 1.9.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Concetto</th>
+            <th>Python</th>
+            <th>JavaScript</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Stampa</td><td><code>print()</code></td><td><code>console.log()</code></td></tr>
+        <tr><td>Variabile</td><td><code>x = 5</code></td><td><code>let x = 5;</code></td></tr>
+        <tr><td>Costante</td><td><code>X = 5</code> (convenzione)</td><td><code>const X = 5;</code></td></tr>
+        <tr><td>Tipo di un valore</td><td><code>type(x)</code></td><td><code>typeof x</code></td></tr>
+        <tr><td>Stringa interpolata</td><td><code>f"Ciao {nome}"</code></td><td><code>`Ciao ${nome}`</code></td></tr>
+        <tr><td>Lunghezza stringa</td><td><code>len(s)</code></td><td><code>s.length</code></td></tr>
+        <tr><td>Commento singolo</td><td><code># commento</code></td><td><code>// commento</code></td></tr>
+        <tr><td>Commento multi-riga</td><td><code>""" ... """</code></td><td><code>/* ... */</code></td></tr>
+        <tr><td>Blocco di codice</td><td>indentazione</td><td><code>{ }</code></td></tr>
+        <tr><td>Condizione</td><td><code>if x > 0:</code></td><td><code>if (x > 0) { }</code></td></tr>
+        <tr><td>Else if</td><td><code>elif</code></td><td><code>else if</code></td></tr>
+        <tr><td>Uguale (confronto)</td><td><code>==</code></td><td><code>===</code> (strict!)</td></tr>
+        <tr><td>Diverso</td><td><code>!=</code></td><td><code>!==</code></td></tr>
+        <tr><td>AND / OR / NOT</td><td><code>and</code> / <code>or</code> / <code>not</code></td><td><code>&amp;&amp;</code> / <code>||</code> / <code>!</code></td></tr>
+        <tr><td>Nessun valore</td><td><code>None</code></td><td><code>null</code> / <code>undefined</code></td></tr>
+        <tr><td>Booleani</td><td><code>True</code> / <code>False</code></td><td><code>true</code> / <code>false</code></td></tr>
+        <tr><td>Operatore ternario</td><td><code>"sì" if cond else "no"</code></td><td><code>cond ? "sì" : "no"</code></td></tr>
+        <tr><td>Switch / Match</td><td><code>match/case</code> (Python 3.10+)</td><td><code>switch/case</code></td></tr>
+        <tr><td>For each (valori)</td><td><code>for x in lista:</code></td><td><code>for (let x of array) { }</code></td></tr>
+        <tr><td>For each (chiavi)</td><td><code>for k in dizionario:</code></td><td><code>for (let k in oggetto) { }</code></td></tr>
+        <tr><td>Range loop</td><td><code>for i in range(n):</code></td><td><code>for (let i = 0; i &lt; n; i++) { }</code></td></tr>
+        <tr><td>Do…while</td><td>— (non esiste)</td><td><code>do { } while (cond);</code></td></tr>
+        <tr><td>Input utente</td><td><code>input("Prompt: ")</code></td><td><code>prompt("Prompt: ")</code></td></tr>
+        <tr><td>Conversione a intero</td><td><code>int("42")</code></td><td><code>parseInt("42")</code> o <code>Number("42")</code></td></tr>
+        <tr><td>Conversione a stringa</td><td><code>str(42)</code></td><td><code>String(42)</code> o <code>`${42}`</code></td></tr>
+        <tr><td>Incremento</td><td><code>x += 1</code></td><td><code>x++</code> o <code>x += 1</code></td></tr>
+        <tr><td>Metodi stringa</td><td><code>s.upper()</code>, <code>len(s)</code>…</td><td><code>s.toUpperCase()</code>, <code>s.length</code>…</td></tr>
+        <tr><td>Array / Lista</td><td><code>lista = [1, 2, 3]</code></td><td><code>let arr = [1, 2, 3];</code></td></tr>
+        <tr><td>Aggiunge in fondo</td><td><code>lista.append(x)</code></td><td><code>arr.push(x)</code></td></tr>
+        <tr><td>Rimuove l'ultimo</td><td><code>lista.pop()</code></td><td><code>arr.pop()</code></td></tr>
+        <tr><td>Lunghezza array</td><td><code>len(lista)</code></td><td><code>arr.length</code></td></tr>
+        <tr><td>Slice array</td><td><code>lista[1:3]</code></td><td><code>arr.slice(1, 3)</code></td></tr>
+        <tr><td>Map</td><td><code>[f(x) for x in lista]</code></td><td><code>arr.map(x => f(x))</code></td></tr>
+        <tr><td>Filter</td><td><code>[x for x in lista if cond]</code></td><td><code>arr.filter(x => cond)</code></td></tr>
+        <tr><td>Reduce</td><td><code>functools.reduce(f, lista)</code></td><td><code>arr.reduce((acc, x) => ..., init)</code></td></tr>
+        <tr><td>Oggetto / Dizionario</td><td><code>d = {"a": 1}</code></td><td><code>let obj = { a: 1 };</code></td></tr>
+        <tr><td>Funzione</td><td><code>def f(x):</code></td><td><code>function f(x) { }</code></td></tr>
+        <tr><td>Arrow function</td><td>— (lambda limitato)</td><td><code>const f = x => x * 2;</code></td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<!--
+    File: js1_8ternario_switch.html
+    Argomento: Operatore ternario e switch in JavaScript
+    Prerequisiti: js1_1 … js1_7
+
+    COME USARE QUESTO FILE:
+    Apri il browser, vai su DevTools (Cmd+Option+J) → Console,
+    poi ricarica la pagina per vedere tutti i log degli esempi.
+-->
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>1.8 — Ternario e Switch</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        h1 { color: #569cd6; }
+        h2 { color: #4ec9b0; margin-top: 40px; }
+        h3 { color: #9cdcfe; }
+
+        pre {
+            background: #252526;
+            border-left: 4px solid #569cd6;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .ok      { color: #4ec9b0; }
+        .error   { color: #f44747; }
+        .note    { color: #ffd700; }
+        .comment { color: #6a9955; }
+        .bug     { color: #f44747; font-weight: bold; }
+        .kw      { color: #569cd6; }   /* keyword */
+        .str     { color: #ce9178; }   /* string */
+        .num     { color: #b5cea8; }   /* number */
+
+        .box {
+            background: #252526;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 16px 0;
+        }
+        .regola-oro {
+            border-left: 4px solid #ffd700;
+            background: #2a2500;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .attenzione {
+            border-left: 4px solid #f44747;
+            background: #2a0000;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px 14px;
+            text-align: left;
+        }
+        th { background: #2d2d2d; color: #569cd6; }
+        tr:nth-child(even) { background: #252526; }
+    </style>
+</head>
+
+<body>
+
+<h1>1.8 — Operatore ternario e <code>switch</code></h1>
+
+<p>
+    Due strumenti per scrivere logica condizionale in modo compatto.
+    L'operatore ternario esiste anche in Python (con sintassi diversa);
+    lo <code>switch</code> invece non ha equivalente diretto in Python (fino a Python 3.10).
+</p>
+
+
+<!-- =====================================================================
+     SEZIONE 1 — Operatore ternario
+     ===================================================================== -->
+<h2>1. Operatore ternario <code>? :</code></h2>
+
+<p>
+    È un <code>if/else</code> su una sola riga che <strong>restituisce un valore</strong>.
+    Sintassi:
+</p>
+
+<pre>
+<span class="comment">// condizione ? valore_se_vera : valore_se_falsa</span>
+let risultato = (condizione) ? <span class="str">"sì"</span> : <span class="str">"no"</span>;</pre>
+
+<div class="box">
+    <span class="note">Confronto con Python:</span>
+    <pre style="margin: 8px 0 0 0;">
+<span class="comment">// JavaScript</span>
+let messaggio = (eta >= 18) ? <span class="str">"Maggiorenne"</span> : <span class="str">"Minorenne"</span>;
+
+<span class="comment">// Python — stessa logica, sintassi diversa</span>
+<span class="comment">// messaggio = "Maggiorenne" if eta >= 18 else "Minorenne"</span></pre>
+</div>
+
+<div class="regola-oro">
+    <strong>Regola #1 — Il ternario è un'espressione, non uno statement.</strong><br>
+    Restituisce sempre un valore, quindi può essere usato direttamente in un'assegnazione,
+    in un <code>console.log</code>, in un template literal o come argomento di una funzione.
+    Non usarlo per eseguire effetti collaterali (come chiamate a funzioni con side-effect):
+    per quelli usa un normale <code>if/else</code>.
+</div>
+
+<pre>
+<span class="comment">// ── Uso base ──────────────────────────────────────────────────────────</span>
+let eta = 20;
+let accesso = (eta >= 18) ? <span class="str">"Accesso consentito"</span> : <span class="str">"Accesso negato"</span>;
+console.log(accesso);                    <span class="comment">// "Accesso consentito"</span>
+
+<span class="comment">// ── Direttamente nel console.log (REGOLA #1) ──────────────────────────</span>
+console.log(eta >= 18 ? <span class="str">"adulto"</span> : <span class="str">"minore"</span>);   <span class="comment">// "adulto"</span>
+
+<span class="comment">// ── In un template literal ─────────────────────────────────────────────</span>
+let nome = <span class="str">"Anna"</span>;
+let punteggio = 85;
+console.log(`${nome} è ${punteggio >= 60 ? <span class="str">"promossa"</span> : <span class="str">"bocciata"</span>}.`);
+<span class="comment">// "Anna è promossa."</span>
+
+<span class="comment">// ── Come argomento ─────────────────────────────────────────────────────</span>
+let numeri = [5, -3, 8, -1, 0];
+numeri.forEach(n => {
+    console.log(n, n > 0 ? <span class="str">"positivo"</span> : n < 0 ? <span class="str">"negativo"</span> : <span class="str">"zero"</span>);
+});
+<span class="comment">// 5  "positivo"</span>
+<span class="comment">// -3 "negativo"</span>
+<span class="comment">// 8  "positivo"</span>
+<span class="comment">// -1 "negativo"</span>
+<span class="comment">// 0  "zero"</span></pre>
+
+<h3>1.1 Ternari annidati</h3>
+
+<p>
+    È possibile annidare ternari (un <code>:</code> che contiene un altro <code>? :</code>),
+    ma oltre due livelli il codice diventa illeggibile.
+</p>
+
+<div class="attenzione">
+    <strong>Regola #2 — Non annidare più di due ternari.</strong><br>
+    Se hai tre o più condizioni, usa <code>if/else if/else</code> o <code>switch</code>:
+    il guadagno in brevità non vale la perdita di leggibilità.
+</div>
+
+<pre>
+<span class="comment">// ✅ Due livelli: accettabile</span>
+let voto = 7;
+let giudizio = voto >= 9 ? <span class="str">"ottimo"</span>
+             : voto >= 6 ? <span class="str">"sufficiente"</span>
+             :              <span class="str">"insufficiente"</span>;
+console.log(giudizio);   <span class="comment">// "sufficiente"</span>
+
+<span class="comment">// ❌ Tre livelli: da evitare — usa if/else if oppure switch</span>
+<span class="comment">// let r = a ? "a" : b ? "b" : c ? "c" : "d";  ← illeggibile!</span>
+
+<span class="comment">// ✅ Equivalente leggibile con if/else if:</span>
+let r;
+if      (voto >= 9) r = <span class="str">"ottimo"</span>;
+else if (voto >= 7) r = <span class="str">"buono"</span>;
+else if (voto >= 6) r = <span class="str">"sufficiente"</span>;
+else                r = <span class="str">"insufficiente"</span>;
+console.log(r);          <span class="comment">// "buono"</span></pre>
+
+
+<!-- =====================================================================
+     SEZIONE 2 — Switch
+     ===================================================================== -->
+<h2>2. L'istruzione <code>switch</code></h2>
+
+<p>
+    Confronta un valore contro una serie di <strong>casi precisi</strong>.
+    Non esiste in Python fino a Python 3.10 (dove è stato introdotto <code>match/case</code>
+    con semantica diversa). In JS è utile quando hai molte condizioni di uguaglianza
+    sullo stesso valore.
+</p>
+
+<pre>
+<span class="kw">switch</span> (espressione) {
+    <span class="kw">case</span> valore1:
+        <span class="comment">// codice</span>
+        <span class="kw">break</span>;          <span class="comment">// ⚠️ obbligatorio per uscire dal blocco</span>
+    <span class="kw">case</span> valore2:
+        <span class="comment">// codice</span>
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:            <span class="comment">// opzionale: se nessun case corrisponde</span>
+        <span class="comment">// codice</span>
+}</pre>
+
+<div class="attenzione">
+    <strong>Regola #3 — Senza <code>break</code> si verifica il "fall-through".</strong><br>
+    Se dimentichi il <code>break</code>, l'esecuzione <em>continua</em> nel case successivo
+    anche se la condizione non corrisponde. Questo causa bug silenziosi difficili da trovare.
+    Metti sempre <code>break</code> (o <code>return</code> se sei dentro una funzione),
+    tranne quando vuoi deliberatamente il fall-through per raggruppare casi.
+</div>
+
+<div class="regola-oro">
+    <strong>Regola #4 — <code>switch</code> usa confronto stretto (<code>===</code>).</strong><br>
+    <code>switch ("1")</code> non corrisponde a <code>case 1:</code> perché i tipi sono diversi.
+    È lo stesso comportamento di <code>===</code>: nessuna coercizione di tipo.
+</div>
+
+<pre>
+<span class="comment">// ── Esempio base: giorno della settimana ──────────────────────────────</span>
+let giorno = <span class="str">"lunedì"</span>;
+
+<span class="kw">switch</span> (giorno) {
+    <span class="kw">case</span> <span class="str">"lunedì"</span>:
+    <span class="kw">case</span> <span class="str">"martedì"</span>:
+    <span class="kw">case</span> <span class="str">"mercoledì"</span>:
+    <span class="kw">case</span> <span class="str">"giovedì"</span>:
+    <span class="kw">case</span> <span class="str">"venerdì"</span>:
+        console.log(<span class="str">"Giorno lavorativo"</span>);
+        <span class="kw">break</span>;                         <span class="comment">// ⚠️ obbligatorio</span>
+    <span class="kw">case</span> <span class="str">"sabato"</span>:
+    <span class="kw">case</span> <span class="str">"domenica"</span>:
+        console.log(<span class="str">"Weekend!"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        console.log(<span class="str">"Giorno non valido"</span>);
+}
+<span class="comment">// stampa: "Giorno lavorativo"</span>
+
+<span class="comment">// ── Fall-through VOLONTARIO (casi raggruppati) ─────────────────────────</span>
+<span class="comment">// Lasciare case senza break per farli "cadere" nel successivo</span>
+<span class="comment">// è una tecnica intenzionale: i case "lunedì"…"venerdì" sopra ne sono un esempio.</span>
+
+<span class="comment">// ── Fall-through ACCIDENTALE (bug) ────────────────────────────────────</span>
+let colore = <span class="str">"rosso"</span>;
+<span class="kw">switch</span> (colore) {
+    <span class="kw">case</span> <span class="str">"rosso"</span>:
+        console.log(<span class="str">"Stop"</span>);
+        <span class="comment">// ❌ manca il break!</span>
+    <span class="kw">case</span> <span class="str">"giallo"</span>:
+        console.log(<span class="str">"Attenzione"</span>);   <span class="comment">// ← viene eseguito anche questo! BUG</span>
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">"verde"</span>:
+        console.log(<span class="str">"Vai"</span>);
+        <span class="kw">break</span>;
+}
+<span class="comment">// stampa: "Stop" e poi "Attenzione"  ← REGOLA #3: senza break cade nel case dopo</span>
+
+<span class="comment">// ── REGOLA #4: switch usa === (nessuna coercizione) ────────────────────</span>
+<span class="kw">switch</span> (<span class="num">1</span>) {
+    <span class="kw">case</span> <span class="str">"1"</span>:               <span class="comment">// "1" !== 1 → non corrisponde</span>
+        console.log(<span class="str">"stringa"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">1</span>:                 <span class="comment">// 1 === 1 → corrisponde</span>
+        console.log(<span class="str">"numero"</span>);
+        <span class="kw">break</span>;
+}
+<span class="comment">// stampa: "numero"</span>
+
+<span class="comment">// ── switch con return (dentro una funzione — no break necessario) ──────</span>
+function descriviVoto(voto) {
+    <span class="kw">switch</span> (true) {            <span class="comment">// trick: confronta booleani con true</span>
+        <span class="kw">case</span> voto >= 9: <span class="kw">return</span> <span class="str">"Ottimo"</span>;
+        <span class="kw">case</span> voto >= 7: <span class="kw">return</span> <span class="str">"Buono"</span>;
+        <span class="kw">case</span> voto >= 6: <span class="kw">return</span> <span class="str">"Sufficiente"</span>;
+        <span class="kw">default</span>:        <span class="kw">return</span> <span class="str">"Insufficiente"</span>;
+    }
+}
+console.log(descriviVoto(9.5));  <span class="comment">// "Ottimo"</span>
+console.log(descriviVoto(7));    <span class="comment">// "Buono"</span>
+console.log(descriviVoto(4));    <span class="comment">// "Insufficiente"</span></pre>
+
+<h3>2.1 <code>switch</code> vs <code>if/else if</code> vs ternario — quando usare cosa</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Strumento</th>
+            <th>Usa quando…</th>
+            <th>Evita quando…</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>? :</code> ternario</td>
+            <td>Hai <strong>2 casi</strong> e vuoi un valore da assegnare</td>
+            <td>Hai più di 2 casi o logica complessa</td>
+        </tr>
+        <tr>
+            <td><code>if / else if</code></td>
+            <td>Le condizioni sono <strong>intervalli o espressioni</strong> (<code>&gt;=</code>, <code>&amp;&amp;</code>…)</td>
+            <td>Confronti uguaglianza multipla sullo stesso valore</td>
+        </tr>
+        <tr>
+            <td><code>switch</code></td>
+            <td>Confronti <strong>uguaglianza esatta</strong> su uno stesso valore con 3+ casi</td>
+            <td>Condizioni con range o espressioni booleane complesse</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- =====================================================================
+     SEZIONE 3 — Esercizi Console
+     ===================================================================== -->
+<h2>3. Esercizi (controlla la Console — F12)</h2>
+<p>Apri gli strumenti sviluppatore (F12 → Console) e ricarica la pagina.</p>
+
+<script>
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 1 — Operatore ternario base
+     * =====================================================================
+     * Regola #1: il ternario è un'espressione che restituisce un valore.
+     */
+
+    console.log("--- ESERCIZIO 1: ternario base ---");
+
+    let eta = 20;
+
+    // Assegnazione
+    let accesso = (eta >= 18) ? "Accesso consentito" : "Accesso negato";
+    console.log(accesso);                            // "Accesso consentito"
+
+    // Dentro console.log
+    console.log(eta >= 18 ? "adulto" : "minore");    // "adulto"
+
+    // In un template literal
+    let nome = "Anna";
+    let punteggio = 85;
+    console.log(`${nome} è ${punteggio >= 60 ? "promossa" : "bocciata"}.`);
+    // "Anna è promossa."
+
+    // Come argomento di forEach
+    let numeri = [5, -3, 8, -1, 0];
+    numeri.forEach(n => {
+        console.log(n, n > 0 ? "positivo" : n < 0 ? "negativo" : "zero");
+    });
+    // 5  "positivo"
+    // -3 "negativo"
+    // 8  "positivo"
+    // -1 "negativo"
+    // 0  "zero"
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 2 — Ternario annidato (max due livelli)
+     * =====================================================================
+     * Regola #2: non annidare più di due ternari.
+     */
+
+    console.log("\n--- ESERCIZIO 2: ternario annidato ---");
+
+    let voto = 7;
+
+    // ✅ Due livelli: accettabile
+    let giudizio = voto >= 9 ? "ottimo"
+                 : voto >= 6 ? "sufficiente"
+                 :              "insufficiente";
+    console.log(giudizio);   // "sufficiente"
+
+    // Equivalente leggibile con if/else if (per >=3 livelli)
+    let r;
+    if      (voto >= 9) r = "ottimo";
+    else if (voto >= 7) r = "buono";
+    else if (voto >= 6) r = "sufficiente";
+    else                r = "insufficiente";
+    console.log(r);          // "buono"
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 3 — switch: caso base
+     * =====================================================================
+     * Regola #3: senza break si verifica il fall-through (bug!).
+     * Regola #4: switch usa === (nessuna coercizione di tipo).
+     */
+
+    console.log("\n--- ESERCIZIO 3: switch base ---");
+
+    let giorno = "lunedì";
+
+    switch (giorno) {
+        case "lunedì":
+        case "martedì":
+        case "mercoledì":
+        case "giovedì":
+        case "venerdì":
+            console.log("Giorno lavorativo");
+            break;                              // ⚠️ obbligatorio
+        case "sabato":
+        case "domenica":
+            console.log("Weekend!");
+            break;
+        default:
+            console.log("Giorno non valido");
+    }
+    // "Giorno lavorativo"
+
+    // REGOLA #4: switch usa === — i tipi devono corrispondere
+    switch (1) {
+        case "1":
+            console.log("stringa");  // non eseguito: "1" !== 1
+            break;
+        case 1:
+            console.log("numero");   // eseguito: 1 === 1
+            break;
+    }
+    // "numero"
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 4 — Fall-through: volontario vs accidentale
+     * =====================================================================
+     */
+
+    console.log("\n--- ESERCIZIO 4: fall-through ---");
+
+    // ✅ Fall-through VOLONTARIO: più case → stessa azione
+    let mese = 2;
+    let stagione;
+    switch (mese) {
+        case 12:
+        case 1:
+        case 2:
+            stagione = "Inverno";
+            break;
+        case 3:
+        case 4:
+        case 5:
+            stagione = "Primavera";
+            break;
+        case 6:
+        case 7:
+        case 8:
+            stagione = "Estate";
+            break;
+        case 9:
+        case 10:
+        case 11:
+            stagione = "Autunno";
+            break;
+        default:
+            stagione = "Mese non valido";
+    }
+    console.log("Mese", mese, "→", stagione);  // "Mese 2 → Inverno"
+
+    // ❌ Fall-through ACCIDENTALE (bug simulato e corretto)
+    let semaforo = "rosso";
+    switch (semaforo) {
+        case "rosso":
+            console.log("Stop");
+            // ← mancava il break: avrebbe stampato anche "Attenzione"!
+            break;   // ✅ corretto
+        case "giallo":
+            console.log("Attenzione");
+            break;
+        case "verde":
+            console.log("Vai");
+            break;
+        default:
+            console.log("Colore non valido");
+    }
+    // "Stop"
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 5 — switch con return dentro una funzione
+     * =====================================================================
+     * Quando switch è dentro una funzione puoi usare return invece di break.
+     */
+
+    console.log("\n--- ESERCIZIO 5: switch con return ---");
+
+    function descriviVoto(v) {
+        switch (true) {            // trick: confronta espressioni booleane
+            case v >= 9: return "Ottimo";
+            case v >= 7: return "Buono";
+            case v >= 6: return "Sufficiente";
+            default:     return "Insufficiente";
+        }
+    }
+
+    console.log(descriviVoto(10)); // "Ottimo"
+    console.log(descriviVoto(8));  // "Buono"
+    console.log(descriviVoto(6));  // "Sufficiente"
+    console.log(descriviVoto(3));  // "Insufficiente"
+
+    // Stessa logica con operatore ternario (confronto stile)
+    let descriviTernario = v =>
+        v >= 9 ? "Ottimo" :
+        v >= 7 ? "Buono"  :
+        v >= 6 ? "Sufficiente" : "Insufficiente";
+
+    console.log(descriviTernario(10)); // "Ottimo"
+    console.log(descriviTernario(4));  // "Insufficiente"
+
+
+    /*
+     * =====================================================================
+     * ESERCIZIO 6 — Sfida: calcolatrice con switch
+     * =====================================================================
+     */
+
+    console.log("\n--- ESERCIZIO 6: calcolatrice con switch ---");
+
+    function calcola(a, operatore, b) {
+        switch (operatore) {
+            case "+": return a + b;
+            case "-": return a - b;
+            case "*": return a * b;
+            case "/":
+                if (b === 0) return "Errore: divisione per zero";
+                return a / b;
+            default:
+                return `Operatore "${operatore}" non supportato`;
+        }
+    }
+
+    console.log(calcola(10, "+", 5));   // 15
+    console.log(calcola(10, "-", 3));   // 7
+    console.log(calcola(4,  "*", 6));   // 24
+    console.log(calcola(10, "/", 2));   // 5
+    console.log(calcola(10, "/", 0));   // "Errore: divisione per zero"
+    console.log(calcola(10, "%", 3));   // "Operatore "%" non supportato"
+
+
+
+
+let dia = "sabato";
+
+switch (dia) {
+    case "lunedì":
+    case "martedì":
+    case "mercoledì":
+    case "giovedì":
+    case "venerdì":
+        console.log("Giorno lavorativo");
+        break;                         // ⚠️ obbligatorio
+    case "sabato":
+    case "domenica":
+        console.log("Weekend!");
+        break;
+    default:
+        console.log("Giorno non valido");
+}
+console.log(dia)
+// stampa: "Giorno lavorativo"
+
+
+</script>
+
+</body>
+</html>

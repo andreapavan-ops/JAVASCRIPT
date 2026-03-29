@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Esempi Backtick</title>
+</head>
+<body>
+  <h1>Esempi Template Literals (Backtick)</h1>
+
+  <h2>
+
+    Su Mac (tastiera italiana):
+
+    Alt (Option) + \ (il tasto backslash, vicino al tasto backspace)
+    <br>
+
+    Su Windows (tastiera italiana):
+
+    Alt + ' (il tasto apostrofo/accento grave)
+    <br>
+    In alternativa, puoi copiarlo da qui:  `
+
+</h2>
+
+  <script>
+    const nome = "Mario";
+    const eta = 25;
+
+    // 1. Interpolazione variabili
+    const saluto = `Ciao, ${nome}!`;
+    console.log(saluto); // Ciao, Mario!
+
+    // 2. Espressione dentro ${}
+    const messaggio = `${nome} ha ${eta} anni. Tra 5 anni ne avrà ${eta + 5}.`;
+    console.log(messaggio);
+
+    // 3. Stringa multiriga
+    const poesia = `Prima riga
+Seconda riga
+Terza riga`;
+    console.log(poesia);
+
+    // 4. Confronto con virgolette normali
+    const vecchioModo = "Ciao, " + nome + "! Hai " + eta + " anni.";
+    const nuovoModo   = `Ciao, ${nome}! Hai ${eta} anni.`;
+    console.log(vecchioModo);
+    console.log(nuovoModo);
+  </script>
+</body>
+</html>

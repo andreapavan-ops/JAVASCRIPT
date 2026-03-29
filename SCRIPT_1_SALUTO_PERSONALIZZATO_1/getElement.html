@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>getElementById - Spiegazione</title>
+</head>
+<body>
+
+  <h1>Come mostrare output in pagina</h1>
+
+  <!-- =====================================================
+    DIFFERENZA TRA CONSOLE E PAGINA
+    ======================================================
+
+    console.log(...)
+    - Mostra il risultato SOLO nella console del browser (F12)
+    - L'utente normale non lo vede mai
+    - Usato dagli sviluppatori per debug
+
+    document.getElementById("id").textContent = ...
+    - Mostra il risultato NELLA PAGINA, visibile a tutti
+    - Scrive il testo dentro un elemento HTML con quell'id
+    - Usato per mostrare dati all'utente finale
+  ====================================================== -->
+
+  <h2>1. Output solo in console (invisibile all'utente)</h2>
+  <p>Apri F12 per vedere il risultato di console.log</p>
+
+  <h2>2. Output in pagina (visibile all'utente)</h2>
+
+  <!-- Questi div sono "contenitori vuoti" che JavaScript riempirà -->
+  <p><strong>Saluto:</strong> <span id="saluto"></span></p>
+  <p><strong>Messaggio:</strong> <span id="messaggio"></span></p>
+  <p><strong>Vecchio modo:</strong> <span id="vecchioModo"></span></p>
+  <p><strong>Nuovo modo:</strong> <span id="nuovoModo"></span></p>
+
+  <script>
+    const nome = "Mario";
+    const eta = 25;
+
+    // --- CONSOLE (solo per sviluppatori) ---
+    console.log("Questo lo vedi solo in console (F12)");
+
+    // --- IN PAGINA (visibile all'utente) ---
+
+    // 1. Prendo l'elemento con id="saluto" e ci scrivo dentro
+    const saluto = `Ciao, ${nome}!`;
+    document.getElementById("saluto").textContent = saluto;
+
+    // 2. Espressione dentro il template literal
+    const messaggio = `${nome} ha ${eta} anni. Tra 5 anni ne avrà ${eta + 5}.`;
+    document.getElementById("messaggio").textContent = messaggio;
+
+    // 3. Vecchio modo con concatenazione +
+    const vecchioModo = "Ciao, " + nome + "! Hai " + eta + " anni.";
+    document.getElementById("vecchioModo").textContent = vecchioModo;
+
+    // 4. Nuovo modo con backtick (più leggibile)
+    const nuovoModo = `Ciao, ${nome}! Hai ${eta} anni.`;
+    document.getElementById("nuovoModo").textContent = nuovoModo;
+
+    // Come vedi, vecchioModo e nuovoModo producono lo stesso risultato,
+    // ma il backtick è molto più leggibile quando hai tante variabili.
+  </script>
+
+</body>
+</html>

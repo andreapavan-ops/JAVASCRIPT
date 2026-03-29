@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<!--
+    File: js1_4let_const_var.html
+    Argomento: Variabili in JavaScript — let, const, var
+    Prerequisiti: js1_1, js1_2, js1_3
+
+    COME USARE QUESTO FILE:
+    Apri il browser, vai su DevTools (F12) → Console,
+    poi ricarica la pagina per vedere tutti i log degli esempi.
+-->
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>1.4 — let, const, var</title>
+    <style>
+        /*
+            Stile minimale per rendere la pagina leggibile come reference.
+            Non è importante per capire JavaScript.
+        */
+        body {
+            font-family: monospace;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        h1 { color: #569cd6; }
+        h2 { color: #4ec9b0; margin-top: 40px; }
+        h3 { color: #9cdcfe; }
+
+        /* Blocchi di codice colorati come un editor */
+        pre {
+            background: #252526;
+            border-left: 4px solid #569cd6;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .ok    { color: #4ec9b0; }   /* ✅ verde per esempi validi */
+        .error { color: #f44747; }   /* ❌ rosso per errori */
+        .note  { color: #ffd700; }   /* 💡 giallo per note importanti */
+        .comment { color: #6a9955; } /* grigio-verde per i commenti JS */
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px 14px;
+            text-align: left;
+        }
+        th { background: #2d2d2d; color: #569cd6; }
+        tr:nth-child(even) { background: #252526; }
+
+        .box {
+            background: #252526;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin: 16px 0;
+        }
+        .regola-oro {
+            border-left: 4px solid #ffd700;
+            background: #2a2500;
+            padding: 12px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>1.4 — Variabili: <code>let</code>, <code>const</code>, <code>var</code></h1>
+
+    <p>
+        In Python una variabile si crea semplicemente assegnandole un valore: <code>x = 5</code>.<br>
+        In JavaScript esistono <strong>tre modi</strong> per dichiarare una variabile, e la scelta conta.
+    </p>
+
+    <!-- =====================================================================
+         SEZIONE 1 — let
+         ===================================================================== -->
+    <h2>1. <code>let</code> — variabile che può cambiare</h2>
+
+    <p>
+        <code>let</code> è il modo moderno per dichiarare una variabile il cui valore
+        potrà essere <strong>riassegnato</strong> in seguito.
+    </p>
+
+    <pre>
+<span class="comment">// Dichiarazione + assegnazione in un'unica riga</span>
+let nome = <span class="ok">"Mario"</span>;
+console.log(nome);    <span class="comment">// → "Mario"</span>
+
+<span class="comment">// Riassegnazione: ✅ consentita con let</span>
+nome = <span class="ok">"Luigi"</span>;
+console.log(nome);    <span class="comment">// → "Luigi"</span>
+
+<span class="comment">// Posso anche dichiarare la variabile prima e assegnarle un valore dopo</span>
+let eta;              <span class="comment">// eta vale undefined (non ancora assegnata)</span>
+eta = 25;
+console.log(eta);     <span class="comment">// → 25</span></pre>
+
+
+    <!-- =====================================================================
+         SEZIONE 2 — const
+         ===================================================================== -->
+    <h2>2. <code>const</code> — costante (non riassegnabile)</h2>
+
+    <p>
+        <code>const</code> crea un "legame" fisso tra il nome e il valore:
+        non puoi <strong>riassegnare</strong> la variabile dopo averla dichiarata.
+    </p>
+
+    <pre>
+const PI = 3.14159;
+console.log(PI);      <span class="comment">// → 3.14159</span>
+
+PI = 3;               <span class="error">// ❌ TypeError: Assignment to constant variable</span>
+                      <span class="comment">// Il browser lancia un errore e blocca l'esecuzione</span></pre>
+
+    <h3>Attenzione: <code>const</code> ≠ immutabile</h3>
+
+    <p>
+        <code>const</code> blocca la <strong>riassegnazione</strong> (non puoi puntare a un nuovo valore),
+        ma <strong>non</strong> impedisce la modifica del contenuto interno di oggetti e array.
+    </p>
+
+    <pre>
+const numeri = [1, 2, 3];
+
+numeri.push(4);            <span class="ok">// ✅ modifica il contenuto dell'array → OK</span>
+console.log(numeri);       <span class="comment">// → [1, 2, 3, 4]</span>
+
+numeri = [5, 6, 7];        <span class="error">// ❌ riassegnazione → TypeError!</span>
+<span class="comment">// numeri puntava a [1,2,3,4], non posso farlo puntare a un nuovo array</span></pre>
+
+    <div class="box">
+        <span class="note">💡 Analogia:</span> immagina <code>const</code> come un cartello con il nome scritto sopra.
+        Il cartello è incollato a una scatola: non puoi spostarlo su un'altra scatola,
+        ma puoi tranquillamente aggiungere oggetti dentro la scatola.
+    </div>
+
+
+    <!-- =====================================================================
+         SEZIONE 3 — var
+         ===================================================================== -->
+    <h2>3. <code>var</code> — il vecchio modo (da evitare)</h2>
+
+    <p>
+        <code>var</code> è la keyword originale di JavaScript (pre-2015).
+        Funziona, ma ha comportamenti controintuitivi legati allo <strong>scope</strong>
+        (l'ambito di visibilità della variabile) che vedremo nella Lezione 3.
+    </p>
+
+    <pre>
+var eta = 20;          <span class="comment">// funziona, ma...</span>
+
+<span class="comment">// PROBLEMA 1 — var "esce" dai blocchi if/for (non da let/const)</span>
+if (true) {
+    var dentro = "visibile fuori!";
+    let fuori  = "rimane dentro";
+}
+console.log(dentro);   <span class="ok">// → "visibile fuori!" (comportamento di var)</span>
+console.log(fuori);    <span class="error">// ❌ ReferenceError (let rispetta il blocco)</span>
+
+<span class="comment">// PROBLEMA 2 — var permette di ridichiarare la stessa variabile senza errori</span>
+var x = 10;
+var x = 20;            <span class="comment">// nessun errore... ma è quasi sempre un bug silenzioso</span>
+
+<span class="comment">// con let questo è un errore esplicito e quindi più sicuro:</span>
+let y = 10;
+let y = 20;            <span class="error">// ❌ SyntaxError: Identifier 'y' has already been declared</span></pre>
+
+    <div class="box">
+        <span class="note">📌 Perché studiare <code>var</code> se è da evitare?</span><br>
+        Perché troverai <code>var</code> in tantissimo codice legacy (vecchio) su GitHub,
+        Stack Overflow e tutorial datati. Devi riconoscerlo e capirlo.
+    </div>
+
+
+    <!-- =====================================================================
+         REGOLA D'ORO
+         ===================================================================== -->
+    <div class="regola-oro">
+        <strong>Regola d'oro:</strong><br><br>
+        ✅ Usa sempre <code>const</code> di default.<br>
+        ✅ Usa <code>let</code> solo quando sai che il valore dovrà cambiare.<br>
+        ❌ <code>var</code> è un'eredità del passato — non usarla in codice nuovo.
+    </div>
+
+
+    <!-- =====================================================================
+         CONFRONTO CON PYTHON
+         ===================================================================== -->
+    <h2>4. Confronto con Python</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Variabile</td>
+                <td><code>x = 5</code></td>
+                <td><code>let x = 5;</code></td>
+            </tr>
+            <tr>
+                <td>Costante</td>
+                <td><code>X = 5</code> (solo convenzione)</td>
+                <td><code>const X = 5;</code> (enforced!)</td>
+            </tr>
+            <tr>
+                <td>Riassegnazione</td>
+                <td>sempre possibile</td>
+                <td><code>let</code> sì, <code>const</code> no</td>
+            </tr>
+            <tr>
+                <td>Punto e virgola</td>
+                <td>non necessario</td>
+                <td>consigliato <code>;</code></td>
+            </tr>
+            <tr>
+                <td>Tipo dichiarato</td>
+                <td>no (dinamico)</td>
+                <td>no (dinamico, TypeScript lo aggiunge)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="box">
+        <span class="note">💡 Punto e virgola:</span>
+        In JS è tecnicamente opzionale grazie all'<strong>Automatic Semicolon Insertion (ASI)</strong>,
+        ma è buona pratica metterlo sempre. Evita sorprese in casi limite come:
+        <pre style="margin:10px 0 0 0;">
+<span class="comment">// Senza punto e virgola, JS può interpretare male il codice:</span>
+const a = 1
+const b = 2
+[a, b].forEach(console.log)   <span class="error">// TypeError — JS legge: const b = 2[a,b]...</span>
+
+<span class="comment">// Con punto e virgola nessun problema:</span>
+const a = 1;
+const b = 2;
+[a, b].forEach(console.log);  <span class="ok">// ✅ stampa 1 e 2</span></pre>
+    </div>
+
+
+    <!-- =====================================================================
+         ESERCIZI — il codice gira nella console, apri F12 per vedere i risultati
+         ===================================================================== -->
+    <h2>5. Esercizi (controlla la Console — F12)</h2>
+    <p>Apri gli strumenti sviluppatore (F12 → Console) e ricarica la pagina per vedere i risultati.</p>
+
+    <script>
+        /*
+         * =====================================================================
+         * ESERCIZIO 1 — let: dichiarazione e riassegnazione
+         * =====================================================================
+         * Obiettivo: capire che let permette di cambiare il valore nel tempo.
+         */
+
+        console.log("--- ESERCIZIO 1: let ---");
+
+        let punteggio = 0;              // Il giocatore parte da 0
+        console.log("Inizio:", punteggio);  // → 0
+
+        punteggio = punteggio + 10;     // Primo punto guadagnato
+        console.log("Dopo +10:", punteggio); // → 10
+
+        punteggio += 5;                 // Shorthand: equivale a punteggio = punteggio + 5
+        console.log("Dopo +5:", punteggio);  // → 15
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 2 — const: costante vera
+         * =====================================================================
+         * Obiettivo: capire quando usare const (valore che non deve cambiare).
+         */
+
+        console.log("\n--- ESERCIZIO 2: const ---");
+
+        const GRAVITA = 9.81;           // Costante fisica — non cambierà mai
+        const NOME_APP = "CalcolaJS";   // Il nome dell'app non cambia a runtime
+
+        console.log("Gravità:", GRAVITA);
+        console.log("App:", NOME_APP);
+
+        // Prova a decommentare la riga sotto per vedere il TypeError:
+        // GRAVITA = 10;  // ❌ TypeError: Assignment to constant variable
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 3 — const con array: modifica del contenuto
+         * =====================================================================
+         * Obiettivo: dimostrare che const NON significa "immutabile".
+         */
+
+        console.log("\n--- ESERCIZIO 3: const + array ---");
+
+        const carrello = [];                // Array vuoto, ma la variabile è const
+
+        carrello.push("Mela");              // ✅ modifica il contenuto → OK
+        carrello.push("Banana");
+        carrello.push("Arancia");
+
+        console.log("Carrello:", carrello); // → ["Mela", "Banana", "Arancia"]
+        console.log("Elementi:", carrello.length); // → 3
+
+        // Prova a decommentare per vedere il TypeError:
+        // carrello = ["Pera"];  // ❌ non puoi riassegnare la variabile
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 4 — Confronto let vs const: quando usare quale
+         * =====================================================================
+         * Obiettivo: scegliere la keyword giusta in base al contesto.
+         */
+
+        console.log("\n--- ESERCIZIO 4: scegliere let o const ---");
+
+        // Il nome dell'utente non cambia nella sessione → const
+        const nomeUtente = "Giulia";
+
+        // Il contatore cambia ad ogni ciclo → let
+        let contatore = 0;
+
+        // Simuliamo un ciclo di 3 iterazioni
+        contatore++;   // contatore = 1
+        contatore++;   // contatore = 2
+        contatore++;   // contatore = 3
+
+        console.log(nomeUtente + " ha cliccato " + contatore + " volte.");
+        // → "Giulia ha cliccato 3 volte."
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 5 — var vs let: dimostrazione del problema di scope
+         * =====================================================================
+         * Obiettivo: vedere con i propri occhi perché var è problematica.
+         */
+
+        console.log("\n--- ESERCIZIO 5: var vs let nello scope ---");
+
+        // Con var — la variabile "esce" dal blocco if
+        if (true) {
+            var dichiarataConVar = "sono visibile fuori dal blocco!";
+        }
+        console.log("var:", dichiarataConVar);  // → "sono visibile fuori dal blocco!"
+
+        // Con let — la variabile rimane confinata al blocco if
+        if (true) {
+            let dichiarataConLet = "rimango dentro al blocco";
+            console.log("let (dentro):", dichiarataConLet); // → OK
+        }
+        // console.log(dichiarataConLet); // ❌ ReferenceError se decommentata
+
+
+        /*
+         * =====================================================================
+         * ESERCIZIO 6 — Sfida: predici l'output prima di eseguire
+         * =====================================================================
+         * Prima di aprire la console, scrivi su carta cosa ti aspetti di vedere.
+         * Poi esegui e confronta.
+         */
+
+        console.log("\n--- ESERCIZIO 6: sfida ---");
+
+        const x = 10;
+        let y = x * 2;
+        y = y + 5;
+
+        const messaggio = "Il risultato è: " + y;
+        console.log(messaggio);
+        // Cosa stampa? Pensaci prima di guardare...
+        // Risposta: "Il risultato è: 25"  (10*2=20, 20+5=25)
+
+
+
+
+        const numeri = [1, 2, 3];
+        numeri.push(4);            // ✅ funziona! Modifico il contenuto, non la variabile
+        console.log(numeri);       // [1, 2, 3, 4]
+
+        numeri = [5, 6, 7];       // ❌ errore! Non posso riassegnare
+
+    </script>
+
+</body>
+
+</html>

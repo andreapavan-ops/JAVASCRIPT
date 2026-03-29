@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+    DOCTYPE: dichiara al browser che questo è un documento HTML5.
+    Deve essere sempre la prima riga del file.
+-->
+<html lang="it">
+<!--
+    <html>: elemento radice della pagina.
+    lang="it": indica al browser (e ai motori di ricerca) che il contenuto
+    è scritto in italiano. Utile anche per l'accessibilità (screen reader).
+-->
+
+<head>
+    <!--
+        <head>: sezione "invisibile" della pagina.
+        Contiene metadati (informazioni SULLA pagina, non il contenuto visibile).
+    -->
+
+    <meta charset="UTF-8">
+    <!--
+        charset="UTF-8": imposta la codifica dei caratteri.
+        UTF-8 supporta lettere accentate (à, è, ì...), emoji e caratteri
+        di tutte le lingue del mondo. Senza questo, le accentate potrebbero
+        apparire come simboli strani (es. "Ã ").
+    -->
+
+    <title>La mia prima pagina JS</title>
+    <!--
+        <title>: testo che appare nella scheda del browser e nei risultati
+        di ricerca Google. Non è visibile nella pagina stessa.
+    -->
+</head>
+
+<body>
+    <!--
+        <body>: contiene tutto il contenuto VISIBILE della pagina:
+        testi, immagini, bottoni, ecc.
+    -->
+
+    <h1>Ciao JavaScript!</h1>
+    <!--
+        <h1>: intestazione di primo livello (la più importante).
+        Viene visualizzata come testo grande e in grassetto.
+        Si usa per il titolo principale della pagina.
+    -->
+
+    <!-- Il tag script collega il file JS alla pagina -->
+    <script src="script.js"></script>
+    <!--
+        <script src="...">: carica un file JavaScript esterno.
+
+        PERCHÉ in fondo al <body> e non nel <head>?
+        Il browser legge l'HTML dall'alto verso il basso.
+        Se mettessimo lo script nell'<head>, verrebbe eseguito PRIMA
+        che il browser abbia creato gli elementi della pagina (h1, div, ecc.),
+        quindi JS non riuscirebbe a trovarli e manipolarli.
+
+        Mettendolo ALLA FINE del <body>, tutti gli elementi HTML sono già
+        stati caricati quando lo script viene eseguito.
+
+        src="script.js": percorso RELATIVO al file JS.
+        Significa che script.js si trova nella STESSA cartella di questo file HTML.
+    -->
+</body>
+
+</html>
